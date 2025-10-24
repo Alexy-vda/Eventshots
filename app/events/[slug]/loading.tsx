@@ -32,7 +32,7 @@ export default function Loading() {
           {Array.from({ length: 8 }).map((_, i) => (
             <div
               key={i}
-              className="aspect-square bg-cream rounded-lg animate-pulse border-2 border-sage/10"
+              className="aspect-square bg-cream rounded animate-pulse border-2 border-sage/10"
             />
           ))}
         </div>

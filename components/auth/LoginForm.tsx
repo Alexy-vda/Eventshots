@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
 
 export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("demo@acme.io");
   const [password, setPassword] = useState("pass1234");
   const [showPwd, setShowPwd] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -21,7 +20,6 @@ export function LoginForm() {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Cookies HttpOnly seront posés par la route.
         body: JSON.stringify({ email, password }),
       });
       if (!res.ok) {
@@ -29,13 +27,10 @@ export function LoginForm() {
         throw new Error(data.error || "Identifiants incorrects");
       }
 
-      // Stocker le token dans localStorage pour les client components
       const data = await res.json();
       if (data.token) {
         localStorage.setItem("access_token", data.token);
         localStorage.setItem("username", email.split("@")[0]);
-
-        // Émettre un événement pour notifier la Navbar
         window.dispatchEvent(new Event("auth-change"));
       }
 
@@ -51,65 +46,111 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-      <Input
-        type="email"
-        label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        autoComplete="email"
-        required
-        placeholder="votre@email.com"
-      />
-
+      {/* Email Input */}
       <div className="space-y-2">
-        <label className="block text-sm font-semibold text-navy">
-          Mot de passe
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Email
         </label>
-        <div className="flex items-center gap-2">
-          <input
-            type={showPwd ? "text" : "password"}
-            className="flex-1 px-4 py-2.5 border-2 border-sage/30 rounded-lg 
-                     focus:ring-2 focus:ring-terracotta focus:border-terracotta 
-                     bg-white text-navy placeholder:text-navy/40
-                     transition-all hover:border-sage/50"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            required
-            minLength={6}
-            placeholder="Votre mot de passe"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPwd((s) => !s)}
-            className="px-3 py-2.5 text-lg border-2 border-sage/30 rounded-lg 
-                     hover:bg-gold/20 hover:border-sage/50 transition-all"
-            aria-label={showPwd ? "Masquer" : "Afficher"}
-          >
-            {showPwd ? "🙈" : "👁️"}
-          </button>
-        </div>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email"
+          required
+          placeholder="alex.jordan@gmail.com"
+          className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg 
+                   focus:outline-none focus:border-[#6366f1] 
+                   text-[#1a1a1a] placeholder:text-gray-400
+                   transition-colors"
+        />
       </div>
 
-      {!!err && (
-        <div
-          className="flex items-center space-x-3 text-sm text-terracotta 
-                      bg-terracotta/10 border-2 border-terracotta/30 rounded-lg p-4"
+      {/* Password Input */}
+      <div className="space-y-2">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700"
         >
-          <span className="text-xl">⚠️</span>
+          Password
+        </label>
+        <input
+          id="password"
+          type={showPwd ? "text" : "password"}
+          className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg 
+                   focus:outline-none focus:border-[#6366f1] 
+                   text-[#1a1a1a] placeholder:text-gray-400
+                   transition-colors"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
+          required
+          minLength={6}
+          placeholder="••••••••••"
+        />
+        <button
+          type="button"
+          onClick={() => setShowPwd((s) => !s)}
+          className="text-sm text-[#6366f1] hover:text-[#4f46e5] font-medium transition-colors"
+        >
+          {showPwd ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+        </button>
+      </div>
+
+      {/* Remember Me & Forgot Password */}
+      <div className="flex items-center justify-between">
+        <label className="flex items-center gap-3 cursor-pointer">
+          <div className="relative">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="sr-only peer"
+            />
+            <div
+              className="w-11 h-6 bg-gray-200 rounded-full peer 
+                          peer-checked:bg-[#6366f1] 
+                          transition-colors duration-200"
+            ></div>
+            <div
+              className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full 
+                          transition-transform duration-200
+                          peer-checked:translate-x-5"
+            ></div>
+          </div>
+          <span className="text-sm text-gray-700">
+            Remember sign in details
+          </span>
+        </label>
+        <button
+          type="button"
+          className="text-sm text-[#6366f1] hover:text-[#4f46e5] font-medium transition-colors"
+        >
+          Forgot password?
+        </button>
+      </div>
+
+      {/* Error Message */}
+      {!!err && (
+        <div className="bg-[#fef2f2] border border-[#ef4444]/20 text-[#ef4444] px-4 py-3 rounded-lg text-sm">
           <span className="font-medium">{err}</span>
         </div>
       )}
 
-      <Button
+      {/* Submit Button */}
+      <button
         type="submit"
-        variant="primary"
-        size="lg"
-        className="w-full"
-        isLoading={loading}
+        disabled={loading}
+        className="w-full px-4 py-3 bg-[#6366f1] text-white rounded-lg font-medium 
+                 hover:bg-[#4f46e5] 
+                 disabled:bg-gray-300 disabled:cursor-not-allowed
+                 transition-colors"
       >
-        {loading ? "Connexion en cours..." : "Se connecter"}
-      </Button>
+        {loading ? "Connexion en cours..." : "Log in"}
+      </button>
     </form>
   );
 }

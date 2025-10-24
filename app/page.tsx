@@ -1,232 +1,400 @@
-// app/page.tsx
 import Link from "next/link";
 
 export const revalidate = false;
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-cream">
+    <main className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-navy text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-32">
-          <div className="text-center">
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 animate-fade-in">
-              📸 EventShot
+      <section className="relative bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24">
+          {/* Floating avatars decoration */}
+          <div className="absolute top-20 left-10 hidden lg:block">
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#6366f1] to-[#8b5cf6] flex items-center justify-center text-white font-bold">
+              JD
+            </div>
+          </div>
+          <div className="absolute top-32 right-20 hidden lg:block">
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#ec4899] to-[#f43f5e] flex items-center justify-center text-white font-bold">
+              SM
+            </div>
+          </div>
+          <div className="absolute bottom-40 left-32 hidden lg:block">
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#f59e0b] to-[#eab308] flex items-center justify-center text-white font-bold">
+              AL
+            </div>
+          </div>
+          <div className="absolute bottom-32 right-40 hidden lg:block">
+            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#10b981] to-[#14b8a6] flex items-center justify-center text-white font-bold">
+              TC
+            </div>
+          </div>
+
+          <div className="text-center relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#f5f5f5] rounded-full text-sm font-medium text-[#666] mb-6">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              PHOTO EVENTS
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-[#1a1a1a] leading-tight">
+              La plateforme professionnelle
+              <br />
+              pour photographes indépendants
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 text-gold max-w-3xl mx-auto px-2 font-medium">
-              L&apos;outil professionnel pour les photographes d&apos;événements
+
+            <p className="text-lg sm:text-xl mb-10 text-[#666] max-w-3xl mx-auto leading-relaxed">
+              Gérez vos événements, partagez vos photos avec vos clients et
+              développez votre activité de photographe professionnel en toute
+              simplicité.
             </p>
-            <p className="text-base sm:text-lg md:text-xl mb-8 sm:mb-12 text-cream/90 max-w-2xl mx-auto px-2">
-              Créez, gérez et partagez vos galeries photo en toute simplicité.
-              Offrez une expérience premium à vos clients.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 mb-16">
               <Link
                 href="/register"
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-terracotta text-white rounded-lg font-bold text-base sm:text-lg hover:bg-terracotta/90 transition-all hover:scale-[1.02] shadow-lg"
+                className="px-6 py-3 bg-[#1a1a1a] text-white rounded-lg font-medium text-base hover:bg-[#2d2d2d] transition-colors"
               >
-                🚀 Commencer gratuitement
+                Démarrer
               </Link>
+            </div>
+
+            {/* Trusted by section */}
+            <div className="mt-16">
+              <p className="text-sm text-[#999] mb-6 font-medium">
+                Utilisé par plus de 100 photographes indépendants en France
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Intro */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium text-[#666] mb-6">
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              />
+            </svg>
+            25 FEATURES
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-[#1a1a1a]">
+            Tous les outils dont vous avez besoin
+            <br />
+            pour gérer votre activité
+          </h2>
+          <p className="text-lg text-[#666] max-w-2xl mx-auto">
+            Concentrez-vous sur votre art : la photographie. Nous nous occupons
+            de la logistique, du partage et de la gestion de vos galeries
+            événementielles.
+          </p>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
+          {/* Feature 1 - Gestion des événements */}
+          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <h3 className="text-2xl font-bold mb-2 text-[#1a1a1a]">
+                  Gestion des événements
+                </h3>
+                <p className="text-[#666]">
+                  Créez et organisez vos mariages, baptêmes, anniversaires et
+                  shootings en quelques clics. Chaque événement dispose de sa
+                  propre galerie privée.
+                </p>
+              </div>
               <Link
-                href="/login"
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-sage text-white border-2 border-sage rounded-lg font-bold text-base sm:text-lg hover:bg-sage/90 transition-all"
+                href="/dashboard"
+                className="text-sm text-[#6366f1] font-medium whitespace-nowrap"
               >
-                🔑 Se connecter
+                Accès libre →
               </Link>
             </div>
+            {/* Events Preview */}
+            <div className="bg-[#fafafa] rounded-lg p-4 space-y-3">
+              {/* Event 1 - With cover image */}
+              <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="relative h-32 bg-gradient-to-br from-[#6366f1] to-[#8b5cf6]">
+                  {/* Simulated photo cover - in real app would be actual photo */}
+                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519741497674-611481863552?w=400')] bg-cover bg-center" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <p className="font-semibold text-white text-sm">
+                      Mariage Sophie & Marc
+                    </p>
+                    <p className="text-xs text-white/90">
+                      24 octobre 2025 • 156 photos
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Event 2 - Without cover (placeholder) */}
+              <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="relative h-32 bg-gradient-to-br from-[#ec4899] to-[#f43f5e]">
+                  {/* Placeholder when no photos */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg
+                      className="w-12 h-12 text-white/40"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3">
+                    <p className="font-semibold text-white text-sm">
+                      Baptême Lucas
+                    </p>
+                    <p className="text-xs text-white/90">
+                      20 octobre 2025 • En attente de photos
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        {/* Vague décorative */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" className="w-full h-auto">
-            <path
-              fill="#f4f1de"
-              d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
-            ></path>
-          </svg>
+
+          {/* Feature 2 - Partage simple */}
+          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold mb-2 text-[#1a1a1a]">
+                Partage simple et sécurisé
+              </h3>
+              <p className="text-[#666]">
+                Un lien unique par événement pour permettre à vos clients
+                d&apos;accéder et télécharger leurs photos en haute qualité.
+                Protection par code d&apos;accès disponible.
+              </p>
+            </div>
+            {/* Share Preview */}
+            <div className="bg-[#fafafa] rounded-lg p-6 space-y-4">
+              <div className="bg-white p-4 rounded-lg border-2 border-dashed border-gray-300">
+                <div className="flex items-center gap-3">
+                  <svg
+                    className="w-5 h-5 text-[#6366f1]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                    />
+                  </svg>
+                  <div className="flex-1">
+                    <p className="text-xs text-[#999] mb-1">Lien de partage</p>
+                    <p className="text-sm font-mono text-[#1a1a1a]">
+                      eventshot.com/e/mariage-s...
+                    </p>
+                  </div>
+                  <button className="px-3 py-1 bg-[#1a1a1a] text-white text-xs rounded-md hover:bg-[#2d2d2d] transition-colors">
+                    Copier
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <svg
+                  className="w-5 h-5 text-[#22c55e]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
+                </svg>
+                <span className="text-[#666]">
+                  Protégé par code d&apos;accès
+                </span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <svg
+                  className="w-5 h-5 text-[#22c55e]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+                <span className="text-[#666]">
+                  Téléchargement haute qualité
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Coming Soon */}
+          <div className="bg-linear-to-br from-[#6366f1] to-[#8b5cf6] rounded-2xl p-8 text-white md:col-span-2">
+            <div className="text-center max-w-2xl mx-auto">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full text-sm font-medium mb-6">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  />
+                </svg>
+                BIENTÔT DISPONIBLE
+              </div>
+              <h3 className="text-3xl font-bold mb-4">
+                De nouvelles fonctionnalités arrivent
+              </h3>
+              <p className="text-white/90 text-lg mb-6">
+                Nous travaillons sur de nombreuses améliorations : retouche
+                automatique, albums clients personnalisés, facturation intégrée,
+                signature de contrats et bien plus encore...
+              </p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <span className="px-4 py-2 bg-white/10 rounded-full text-sm">
+                  ✨ Retouche IA
+                </span>
+                <span className="px-4 py-2 bg-white/10 rounded-full text-sm">
+                  📄 Contrats
+                </span>
+                <span className="px-4 py-2 bg-white/10 rounded-full text-sm">
+                  💰 Facturation
+                </span>
+                <span className="px-4 py-2 bg-white/10 rounded-full text-sm">
+                  📱 App mobile
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Testimonial Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-4 text-navy">
-            Pourquoi choisir EventShot ?
-          </h2>
-          <p className="text-xl text-center text-navy/70 mb-16 max-w-2xl mx-auto">
-            Une solution complète pour gérer vos photos d&apos;événements
-            professionnellement
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Feature 1 */}
-            <div className="bg-cream/50 p-8 rounded-lg border-2 border-sage/20 hover:border-sage/40 hover:shadow-xl transition-all">
-              <div className="text-5xl mb-4">⚡</div>
-              <h3 className="text-2xl font-bold mb-3 text-navy">
-                Upload ultra-rapide
-              </h3>
-              <p className="text-navy/70">
-                Uploadez vos photos par glisser-déposer. Notre infrastructure
-                optimisée garantit des transferts rapides même pour des
-                centaines de photos.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="bg-cream/50 p-8 rounded-lg border-2 border-sage/20 hover:border-sage/40 hover:shadow-xl transition-all">
-              <div className="text-5xl mb-4">🌐</div>
-              <h3 className="text-2xl font-bold mb-3 text-navy">
-                Galeries publiques
-              </h3>
-              <p className="text-navy/70">
-                Créez des galeries publiques accessibles via un simple lien. Vos
-                invités peuvent consulter et télécharger les photos facilement.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="bg-cream/50 p-8 rounded-lg border-2 border-sage/20 hover:border-sage/40 hover:shadow-xl transition-all">
-              <div className="text-5xl mb-4">🔒</div>
-              <h3 className="text-2xl font-bold mb-3 text-navy">
-                Sécurité garantie
-              </h3>
-              <p className="text-navy/70">
-                Vos photos sont stockées de manière sécurisée. Vous contrôlez
-                qui peut voir, télécharger ou supprimer vos contenus.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it works Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-cream">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-4 text-navy">
-            Comment ça marche ?
-          </h2>
-          <p className="text-xl text-center text-navy/70 mb-16 max-w-2xl mx-auto">
-            Trois étapes simples pour partager vos souvenirs
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-12">
-            {/* Step 1 */}
-            <div className="text-center">
-              <div className="w-20 h-20 bg-sage/20 border-2 border-sage rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-4xl font-bold text-sage">1</span>
-              </div>
-              <h3 className="text-2xl font-bold mb-3 text-navy">
-                Créez votre événement
-              </h3>
-              <p className="text-navy/70">
-                Inscrivez-vous et créez un événement en quelques secondes.
-                Donnez-lui un nom et une description.
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="text-center">
-              <div className="w-20 h-20 bg-terracotta/20 border-2 border-terracotta rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-4xl font-bold text-terracotta">2</span>
-              </div>
-              <h3 className="text-2xl font-bold mb-3 text-navy">
-                Uploadez vos photos
-              </h3>
-              <p className="text-navy/70">
-                Glissez-déposez vos photos depuis votre appareil. Notre système
-                s&apos;occupe du reste !
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="text-center">
-              <div className="w-20 h-20 bg-gold/30 border-2 border-gold rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-4xl font-bold text-navy">3</span>
-              </div>
-              <h3 className="text-2xl font-bold mb-3 text-navy">
-                Partagez le lien
-              </h3>
-              <p className="text-navy/70">
-                Partagez le lien public de votre galerie avec vos invités. Ils
-                peuvent voir et télécharger les photos.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-terracotta text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6">
-            Prêt à professionnaliser vos services ?
-          </h2>
-          <p className="text-xl mb-10 text-cream/90">
-            Rejoignez les photographes professionnels qui utilisent EventShot
-            pour offrir une expérience premium à leurs clients.
-          </p>
-          <Link
-            href="/register"
-            className="inline-block px-10 py-5 bg-white text-terracotta rounded-lg font-bold text-xl hover:bg-cream hover:scale-[1.02] transition-all shadow-2xl"
+          <svg
+            className="w-12 h-12 mx-auto mb-8 text-[#1a1a1a]"
+            fill="currentColor"
+            viewBox="0 0 24 24"
           >
-            🎉 Commencer maintenant
-          </Link>
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+          </svg>
+
+          <blockquote className="text-2xl md:text-3xl font-medium text-[#1a1a1a] mb-8 leading-relaxed">
+            &quot;Depuis que j&apos;utilise EventShot, je gagne un temps fou
+            dans la gestion de mes mariages. Mes clients adorent pouvoir accéder
+            à leurs photos facilement. C&apos;est devenu un outil indispensable
+            pour mon activité de photographe indépendant.&quot;
+          </blockquote>
+
+          <div className="flex items-center justify-center gap-4">
+            <div className="flex -space-x-2">
+              <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#6366f1] to-[#8b5cf6] border-2 border-white" />
+              <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#f59e0b] to-[#eab308] border-2 border-white" />
+            </div>
+            <div className="text-left">
+              <p className="font-semibold text-[#1a1a1a]">Sophie Martin</p>
+              <p className="text-sm text-[#666]">
+                Photographe mariage & événementiel
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-12 text-center">
+            <div>
+              <div className="text-5xl md:text-6xl font-bold text-[#1a1a1a] mb-2">
+                2025
+              </div>
+              <p className="text-lg text-[#666]">Année de création</p>
+            </div>
+            <div>
+              <div className="text-5xl md:text-6xl font-bold text-[#1a1a1a] mb-2">
+                50K+
+              </div>
+              <p className="text-lg text-[#666]">Photos partagées</p>
+            </div>
+            <div>
+              <div className="text-5xl md:text-6xl font-bold text-[#1a1a1a] mb-2">
+                100+
+              </div>
+              <p className="text-lg text-[#666]">Photographes actifs</p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-navy text-cream/80 py-12 px-4 sm:px-6 lg:px-8">
+      <footer className="bg-[#1a1a1a] text-white/70 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="text-white font-serif text-xl font-bold mb-4">
-                📸 EventShot
-              </h3>
-              <p className="text-cream/60">
-                La plateforme moderne pour partager vos photos
-                d&apos;événements.
-              </p>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+            {/* Company Info */}
+            <div className="col-span-2 md:col-span-1">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-white text-lg font-bold">EventShot</span>
+              </div>
+              <p className="text-sm mb-4">Alexy Van Den Abele</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link
+                  href="/register"
+                  className="px-6 py-3 bg-white text-[#1a1a1a] rounded-lg font-medium text-base hover:bg-gray-100 transition-colors whitespace-nowrap"
+                >
+                  Démarrer
+                </Link>
+              </div>
             </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Navigation</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/events" className="hover:text-gold transition">
-                    Événements
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/login" className="hover:text-gold transition">
-                    Connexion
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/register" className="hover:text-gold transition">
-                    S&apos;inscrire
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-white font-semibold mb-4">Légal</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-gold transition">
-                    Conditions d&apos;utilisation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-gold transition">
-                    Politique de confidentialité
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t-2 border-sage/30 pt-8 text-center">
-            <p className="text-cream/50">
-              © {new Date().getFullYear()} EventShot. Tous droits réservés.
-            </p>
           </div>
         </div>
       </footer>

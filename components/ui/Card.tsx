@@ -19,7 +19,7 @@ export const Card = memo(function Card({
 
   return (
     <div
-      className={`bg-white rounded-lg border-2 border-sage/20 shadow-lg transition-all ${hoverStyles} ${className}`}
+      className={`bg-white rounded border-2 border-sage/20 shadow-lg transition-all ${hoverStyles} ${className}`}
       onClick={onClick}
     >
       {children}

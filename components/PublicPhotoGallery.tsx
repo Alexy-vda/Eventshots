@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 import type { Photo } from "@/types";
 
 interface PublicPhotoGalleryProps {
@@ -64,21 +65,59 @@ export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
   const handleDownloadAll = async () => {
     if (photos.length === 0) return;
 
-    const confirmed = confirm(
-      `Télécharger ${photos.length} photo${photos.length > 1 ? "s" : ""} ?`
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-3">
+          <p className="font-medium">
+            Télécharger {photos.length} photo{photos.length > 1 ? "s" : ""} ?
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                toast.dismiss(t.id);
+                proceedDownloadAll();
+              }}
+              className="px-4 py-2 bg-[#6366f1] text-white rounded-md font-medium hover:bg-[#4f46e5] transition-colors"
+            >
+              Confirmer
+            </button>
+            <button
+              onClick={() => toast.dismiss(t.id)}
+              className="px-4 py-2 bg-[#fafafa] rounded-md text-gray-700 font-medium hover:bg-[#f0f0f0] transition-colors"
+            >
+              Annuler
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        duration: Infinity,
+      }
     );
+  };
 
-    if (!confirmed) return;
-
+  const proceedDownloadAll = async () => {
     setDownloading(true);
+    toast.loading("Téléchargement en cours...", { id: "download-all" });
 
-    // Télécharger chaque photo une par une
-    for (const photo of photos) {
-      window.open(photo.url, "_blank");
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Délai pour éviter le blocage des popups
+    try {
+      // Télécharger chaque photo une par une
+      for (const photo of photos) {
+        window.open(photo.url, "_blank");
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Délai pour éviter le blocage des popups
+      }
+
+      toast.success(
+        `${photos.length} photo${photos.length > 1 ? "s" : ""} téléchargée${
+          photos.length > 1 ? "s" : ""
+        }`,
+        { id: "download-all" }
+      );
+    } catch {
+      toast.error("Erreur lors du téléchargement", { id: "download-all" });
+    } finally {
+      setDownloading(false);
     }
-
-    setDownloading(false);
   };
 
   const formatFileSize = (bytes: number) => {
@@ -90,7 +129,21 @@ export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
   if (photos.length === 0) {
     return (
       <div className="text-center py-16">
-        <div className="text-gray-300 text-8xl mb-6">📷</div>
+        <div className="w-20 h-20 mx-auto mb-6 bg-gray-100 rounded-lg flex items-center justify-center">
+          <svg
+            className="w-10 h-10 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+            />
+          </svg>
+        </div>
         <h3 className="text-2xl font-semibold text-gray-700 mb-3">
           Aucune photo disponible
         </h3>
@@ -117,9 +170,9 @@ export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
         <button
           onClick={handleDownloadAll}
           disabled={downloading}
-          className="px-6 py-3 bg-terracotta text-white rounded-lg font-medium hover:bg-terracotta/90 disabled:bg-terracotta/40 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-[#6366f1] text-white rounded-md font-medium hover:bg-[#4f46e5] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
         >
-          {downloading ? "Téléchargement..." : "📥 Télécharger tout"}
+          {downloading ? "Téléchargement..." : "Télécharger tout"}
         </button>
       </div>
 
@@ -128,7 +181,7 @@ export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
         {photos.map((photo, index) => (
           <div
             key={photo.id}
-            className="relative group aspect-square bg-cream rounded-lg overflow-hidden cursor-pointer animate-pulse border-2 border-sage/10"
+            className="relative group aspect-square bg-[#fafafa] rounded-lg overflow-hidden cursor-pointer animate-pulse border border-gray-100"
             onClick={() => setSelectedPhoto(photo)}
           >
             <Image
@@ -136,7 +189,7 @@ export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
               alt={photo.fileName}
               fill
               priority={index < 8}
-              className="object-cover transition-all group-hover:scale-110 group-hover:brightness-75"
+              className="object-cover transition-all group-hover:scale-105 group-hover:brightness-90"
               sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               quality={75}
               placeholder="blur"
@@ -148,7 +201,7 @@ export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
 
             {/* Texte "Voir" au hover - Desktop only */}
             <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
-              <span className="text-white opacity-0 group-hover:opacity-100 text-sm font-medium transition-opacity bg-black bg-opacity-50 px-4 py-2 rounded-lg">
+              <span className="text-white opacity-0 group-hover:opacity-100 text-sm font-medium transition-opacity bg-black bg-opacity-60 px-4 py-2 rounded-md">
                 Voir
               </span>
             </div>
@@ -267,9 +320,9 @@ export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
                   handleDownload(selectedPhoto);
                 }}
                 disabled={downloading}
-                className="px-6 py-2 bg-terracotta text-white rounded-lg font-medium hover:bg-terracotta/90 disabled:bg-terracotta/40 transition-colors whitespace-nowrap"
+                className="px-4 py-2 bg-[#6366f1] text-white rounded-md font-medium hover:bg-[#4f46e5] disabled:bg-gray-300 transition-colors whitespace-nowrap"
               >
-                {downloading ? "Téléchargement..." : "📥 Télécharger"}
+                {downloading ? "Téléchargement..." : "Télécharger"}
               </button>
             </div>
           </div>

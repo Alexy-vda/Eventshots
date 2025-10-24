@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -57,29 +55,54 @@ export function RegisterForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <Input
-        id="name"
-        type="text"
-        label="Nom complet"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        autoComplete="name"
-        placeholder="John Doe"
-        required
-      />
+    <form onSubmit={onSubmit} className="space-y-5">
+      {/* Name Input */}
+      <div className="space-y-2">
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Nom complet
+        </label>
+        <input
+          id="name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          autoComplete="name"
+          placeholder="John Doe"
+          required
+          className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg 
+                   focus:outline-none focus:border-[#6366f1] 
+                   text-[#1a1a1a] placeholder:text-gray-400
+                   transition-colors"
+        />
+      </div>
 
-      <Input
-        id="email"
-        type="email"
-        label="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        autoComplete="email"
-        placeholder="john@example.com"
-        required
-      />
+      {/* Email Input */}
+      <div className="space-y-2">
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          autoComplete="email"
+          placeholder="john@example.com"
+          required
+          className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg 
+                   focus:outline-none focus:border-[#6366f1] 
+                   text-[#1a1a1a] placeholder:text-gray-400
+                   transition-colors"
+        />
+      </div>
 
+      {/* Password Input */}
       <div className="space-y-2">
         <label
           htmlFor="password"
@@ -87,29 +110,23 @@ export function RegisterForm() {
         >
           Mot de passe
         </label>
-        <div className="flex items-center gap-2">
-          <input
-            id="password"
-            type={showPwd ? "text" : "password"}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-400"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="new-password"
-            required
-            minLength={6}
-            placeholder="Minimum 6 caractères"
-          />
-          <button
-            type="button"
-            onClick={() => setShowPwd((s) => !s)}
-            className="px-3 py-2 text-lg border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            aria-label={showPwd ? "Masquer" : "Afficher"}
-          >
-            {showPwd ? "🙈" : "👁️"}
-          </button>
-        </div>
+        <input
+          id="password"
+          type={showPwd ? "text" : "password"}
+          className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg 
+                   focus:outline-none focus:border-[#6366f1] 
+                   text-[#1a1a1a] placeholder:text-gray-400
+                   transition-colors"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="new-password"
+          required
+          minLength={6}
+          placeholder="Minimum 6 caractères"
+        />
       </div>
 
+      {/* Confirm Password Input */}
       <div className="space-y-2">
         <label
           htmlFor="confirmPassword"
@@ -120,7 +137,10 @@ export function RegisterForm() {
         <input
           id="confirmPassword"
           type={showPwd ? "text" : "password"}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-400"
+          className="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-lg 
+                   focus:outline-none focus:border-[#6366f1] 
+                   text-[#1a1a1a] placeholder:text-gray-400
+                   transition-colors"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           autoComplete="new-password"
@@ -128,24 +148,33 @@ export function RegisterForm() {
           minLength={6}
           placeholder="Confirmez votre mot de passe"
         />
+        <button
+          type="button"
+          onClick={() => setShowPwd((s) => !s)}
+          className="text-sm text-[#6366f1] hover:text-[#4f46e5] font-medium transition-colors"
+        >
+          {showPwd ? "Masquer les mots de passe" : "Afficher les mots de passe"}
+        </button>
       </div>
 
+      {/* Error Message */}
       {!!err && (
-        <div className="flex items-center space-x-2 text-sm text-terracotta bg-terracotta/10 border border-terracotta/30 rounded-lg p-3">
-          <span className="text-xl">⚠️</span>
-          <span>{err}</span>
+        <div className="bg-[#fef2f2] border border-[#ef4444]/20 text-[#ef4444] px-4 py-3 rounded-lg text-sm">
+          <span className="font-medium">{err}</span>
         </div>
       )}
 
-      <Button
+      {/* Submit Button */}
+      <button
         type="submit"
-        variant="primary"
-        size="lg"
-        className="w-full"
-        isLoading={loading}
+        disabled={loading}
+        className="w-full px-4 py-3 bg-[#6366f1] text-white rounded-lg font-medium 
+                 hover:bg-[#4f46e5] 
+                 disabled:bg-gray-300 disabled:cursor-not-allowed
+                 transition-colors"
       >
-        {loading ? "Inscription en cours..." : "Créer mon compte"}
-      </Button>
+        {loading ? "Création du compte..." : "Créer mon compte"}
+      </button>
     </form>
   );
 }

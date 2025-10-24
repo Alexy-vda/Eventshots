@@ -52,17 +52,17 @@ export function DashboardNav() {
   }, [isDropdownOpen]);
 
   return (
-    <nav className="bg-white/95 border-b-2 border-sage/20 sticky top-0 z-40 backdrop-blur-lg shadow-sm">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14 sm:h-16">
+    <nav className="bg-white border-b border-[#f0f0f0] sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
           {/* Logo - Retour à l'accueil */}
           <Link
             href="/"
-            className="flex items-center space-x-1 sm:space-x-2 text-lg sm:text-2xl font-bold font-serif text-navy hover:text-terracotta hover:scale-105 transition-all shrink-0"
+            className="flex items-center space-x-2 text-xl font-bold text-[#1a1a1a] hover:text-[#6366f1] transition-colors"
             aria-label="Retour à l'accueil EventShot"
           >
-            <span>📸</span>
-            <span className="hidden xs:inline">EventShot</span>
+            <span className="hidden sm:inline">EventShot</span>
+            <span className="sm:hidden">ES</span>
           </Link>
 
           {/* User Dropdown */}
@@ -70,22 +70,21 @@ export function DashboardNav() {
             {/* Dropdown Trigger */}
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center space-x-2 px-3 sm:px-4 py-2 
-                       bg-gold/10 hover:bg-gold/20 border-2 border-sage/20
-                       rounded-lg transition-all 
-                       focus:outline-none focus:ring-2 focus:ring-terracotta/50 focus:border-terracotta"
+              className="flex items-center space-x-2 px-3 py-2 
+                       bg-[#fafafa] hover:bg-[#f0f0f0] rounded-md transition-colors 
+                       focus:outline-none focus:ring-2 focus:ring-[#6366f1]"
               aria-expanded={isDropdownOpen}
               aria-haspopup="true"
             >
-              <span className="text-xl sm:text-2xl" aria-hidden="true">
-                👤
+              <span className="w-8 h-8 bg-[#e0e7ff] rounded-full flex items-center justify-center text-[#6366f1] font-semibold text-sm">
+                {username ? username.charAt(0).toUpperCase() : "U"}
               </span>
-              <span className="font-semibold text-navy text-xs sm:text-sm truncate max-w-20 sm:max-w-32">
+              <span className="font-medium text-[#1a1a1a] text-sm hidden sm:block max-w-32 truncate">
                 {username || "Utilisateur"}
               </span>
               {/* Icône flèche */}
               <svg
-                className={`w-4 h-4 text-sage transition-transform ${
+                className={`w-4 h-4 text-[#666] transition-transform ${
                   isDropdownOpen ? "rotate-180" : ""
                 }`}
                 fill="none"
@@ -103,13 +102,13 @@ export function DashboardNav() {
 
             {/* Dropdown Menu */}
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border-2 border-sage/30 py-1 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg border border-[#f0f0f0] py-1 z-50 shadow-lg">
                 {/* User Info */}
-                <div className="px-4 py-3 border-b-2 border-gold/30">
-                  <p className="text-sm font-bold text-navy truncate">
+                <div className="px-4 py-3 border-b border-[#f0f0f0]">
+                  <p className="text-sm font-semibold text-[#1a1a1a] truncate">
                     {username || "Utilisateur"}
                   </p>
-                  <p className="text-xs text-sage font-medium mt-1">
+                  <p className="text-xs text-[#666] font-medium mt-1">
                     Compte photographe
                   </p>
                 </div>

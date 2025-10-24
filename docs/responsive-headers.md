@@ -32,7 +32,7 @@ Les headers n'étaient pas complètement optimisés pour les petits écrans mobi
 
 **Desktop** (≥ 640px):
 ```tsx
-<div className="hidden sm:flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gray-50 rounded-lg">
+<div className="hidden sm:flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gray-50 rounded">
   <span className="text-xl sm:text-2xl">👤</span>
   <span className="font-medium text-gray-700 text-sm sm:text-base truncate max-w-30 sm:max-w-none">
     {username}

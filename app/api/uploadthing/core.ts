@@ -6,7 +6,7 @@ const f = createUploadthing();
 // FileRouter pour l'application
 export const ourFileRouter = {
   // Route pour uploader des photos d'événements
-  eventImageUploader: f({ image: { maxFileSize: "16MB", maxFileCount: 50 } })
+  eventImageUploader: f({ image: { maxFileSize: "32MB", maxFileCount: 50 } })
     // Middleware pour vérifier l'authentification
     .middleware(async ({ req }) => {
       // Récupérer le token depuis les headers

@@ -30,7 +30,7 @@ Remplacement du bouton de déconnexion visible par un dropdown élégant avec pr
 
 ### Trigger (bouton utilisateur)
 ```tsx
-<button className="flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+<button className="flex items-center space-x-2 px-3 sm:px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
   <span>👤</span>
   <span className="truncate">{username}</span>
   <svg className="rotate-180-when-open">▼</svg>
@@ -45,7 +45,7 @@ Remplacement du bouton de déconnexion visible par un dropdown élégant avec pr
 
 ### Menu dropdown
 ```tsx
-<div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200">
+<div className="absolute right-0 mt-2 w-56 bg-white rounded shadow-xl border border-gray-200">
   {/* User Info */}
   <div className="px-4 py-3 border-b">
     <p className="text-sm font-medium">{username}</p>

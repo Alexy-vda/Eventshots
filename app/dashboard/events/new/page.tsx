@@ -62,7 +62,7 @@ export default function NewEventPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-8">
+        <div className="bg-white rounded-md shadow-md p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Créer un nouvel événement
           </h1>
@@ -71,7 +71,7 @@ export default function NewEventPage() {
           </p>
 
           {error && (
-            <div className="mb-6 bg-terracotta/10 border border-terracotta/30 text-terracotta px-4 py-3 rounded">
+            <div className="mb-6 bg-terracotta/10 border border-terracotta/30 text-terracotta px-4 py-3 rounded-md">
               {error}
             </div>
           )}
@@ -89,7 +89,7 @@ export default function NewEventPage() {
                 id="title"
                 name="title"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Ex: Mariage de Sarah & Thomas"
               />
             </div>
@@ -105,7 +105,7 @@ export default function NewEventPage() {
                 id="description"
                 name="description"
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Décrivez votre événement..."
               />
             </div>
@@ -122,7 +122,7 @@ export default function NewEventPage() {
                 id="date"
                 name="date"
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
 
@@ -137,7 +137,7 @@ export default function NewEventPage() {
                 type="text"
                 id="location"
                 name="location"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Ex: Château de Versailles"
               />
             </div>
@@ -146,14 +146,14 @@ export default function NewEventPage() {
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="flex-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                className="flex-1 px-6 py-3 border border-gray-300 rounded-md text-gray-700 font-medium hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 Annuler
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 px-6 py-3 bg-terracotta text-white rounded-lg font-medium hover:bg-terracotta/90 disabled:bg-terracotta/40 disabled:cursor-not-allowed transition-colors"
+                className="flex-1 px-6 py-3 bg-[#6366f1]  text-white rounded-md font-medium hover:bg-[#6366f1]/90 disabled:bg-[#6366f1]/40 disabled:cursor-not-allowed transition-colors cursor-pointer"
               >
                 {loading ? "Création..." : "Créer l'événement"}
               </button>

@@ -7,7 +7,6 @@ import {
   ApiError,
   extractAuthToken,
   jsonResponse,
-  errorResponse,
 } from "@/lib/apiUtils";
 import { checkRateLimit } from "@/lib/rateLimit";
 
@@ -52,13 +51,20 @@ export const GET = apiHandler(async (req: Request) => {
     throw new ApiError("Trop de requêtes, veuillez réessayer plus tard", 429);
   }
 
-  // Récupérer les événements de l'utilisateur avec le compteur de photos
+  // Récupérer les événements de l'utilisateur avec le compteur de photos et la première photo
   const events = await prisma.event.findMany({
     where: { userId: payload.userId },
     orderBy: { date: "desc" },
     include: {
       _count: {
         select: { photos: true },
+      },
+      photos: {
+        take: 1,
+        orderBy: { createdAt: "asc" },
+        select: {
+          url: true,
+        },
       },
     },
   });

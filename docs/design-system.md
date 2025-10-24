@@ -76,7 +76,7 @@ Transition d'un design froid (bleu/violet) vers une esthétique **chaleureuse et
 |--------|--------|---------|------------|
 | `rounded-sm` | 8px | **6px** | -2px |
 | `rounded` / `rounded-md` | 12px | **8px** | -4px |
-| `rounded-lg` | 16px | **12px** | -4px |
+| `rounded` | 16px | **12px** | -4px |
 | `rounded-xl` | 24px | **16px** | -8px |
 | `rounded-2xl` | - | **20px** | Pour boutons (ex rounded-full) |
 
@@ -84,16 +84,16 @@ Transition d'un design froid (bleu/violet) vers une esthétique **chaleureuse et
 
 ```tsx
 // Cards
-<Card className="rounded-lg border-2 border-sage/20">
+<Card className="rounded border-2 border-sage/20">
 
 // Buttons
-<button className="rounded-lg"> {/* 12px */}
+<button className="rounded"> {/* 12px */}
 
 // Delete button (moins rond)
 <button className="rounded-2xl"> {/* 20px au lieu de full */}
 
 // Inputs
-<input className="rounded-lg border-2">
+<input className="rounded border-2">
 ```
 
 ---
@@ -138,7 +138,7 @@ Transition d'un design froid (bleu/violet) vers une esthétique **chaleureuse et
 
 **Base** :
 ```tsx
-<Card className="rounded-lg border-2 border-sage/20 shadow-lg">
+<Card className="rounded border-2 border-sage/20 shadow-lg">
   <CardHeader>...</CardHeader>
   <CardBody>...</CardBody>
 </Card>
@@ -232,7 +232,7 @@ border-2 border-sage/10
 
 **Hover overlay** :
 ```tsx
-bg-navy bg-opacity-70 px-4 py-2 rounded-lg
+bg-navy bg-opacity-70 px-4 py-2 rounded
 ```
 
 ### Delete button
