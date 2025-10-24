@@ -43,43 +43,43 @@ Projet : Plateforme pour photographes - Upload et partage de photos d'événemen
 ## 🎪 Phase 2 : Gestion des Événements
 
 ### Modèle de données
-- [ ] Créer le schéma Event dans Prisma
-- [ ] Ajouter relation User -> Events
-- [ ] Exécuter la migration
-- [ ] Créer types TypeScript
+- [x] Créer le schéma Event dans Prisma
+- [x] Ajouter relation User -> Events
+- [x] Exécuter la migration
+- [x] Créer types TypeScript
 
 ### Création d'événement
-- [ ] Créer la page `/dashboard/events/new`
-- [ ] Créer le composant `EventForm`
-- [ ] Créer l'API `/api/events` (POST)
-- [ ] Générer un slug unique
-- [ ] Générer un lien de partage unique
-- [ ] Rediriger vers le dashboard après création
+- [x] Créer la page `/dashboard/events/new`
+- [x] Créer le composant `EventForm`
+- [x] Créer l'API `/api/events` (POST)
+- [x] Générer un slug unique
+- [x] Générer un lien de partage unique
+- [x] Rediriger vers le dashboard après création
 
 ### Liste des événements
-- [ ] Modifier `/dashboard` pour afficher les événements de l'utilisateur
-- [ ] Créer le composant `EventCard`
-- [ ] Afficher nombre de photos par événement
-- [ ] Ajouter lien vers détail événement
+- [x] Modifier `/dashboard` pour afficher les événements de l'utilisateur
+- [x] Créer le composant `EventCard`
+- [x] Afficher nombre de photos par événement
+- [x] Ajouter lien vers détail événement
 
 ### Détail et édition
-- [ ] Créer la page `/dashboard/events/[id]`
-- [ ] Afficher les infos de l'événement
-- [ ] Créer la page `/dashboard/events/[id]/edit`
-- [ ] Créer l'API `/api/events/[id]` (PATCH)
-- [ ] Implémenter la modification
+- [x] Créer la page `/dashboard/events/[id]`
+- [x] Afficher les infos de l'événement
+- [x] Créer la page `/dashboard/events/[id]/edit`
+- [x] Créer l'API `/api/events/[id]` (PATCH)
+- [x] Implémenter la modification
 
 ### Suppression
-- [ ] Créer l'API `/api/events/[id]` (DELETE)
+- [x] Créer l'API `/api/events/[id]` (DELETE)
 - [ ] Ajouter bouton de suppression
 - [ ] Ajouter confirmation avant suppression
 - [ ] Gérer la cascade (supprimer les photos associées)
 
 ### Lien visiteur
-- [ ] Afficher le lien de partage dans le détail
-- [ ] Bouton copier le lien
-- [ ] Créer la page publique `/e/[shareLink]`
-- [ ] Afficher les infos de l'événement (sans auth)
+- [x] Afficher le lien de partage dans le détail
+- [x] Bouton copier le lien
+- [x] Créer la page publique `/e/[shareLink]`
+- [x] Afficher les infos de l'événement (sans auth)
 
 ---
 
@@ -237,14 +237,14 @@ Projet : Plateforme pour photographes - Upload et partage de photos d'événemen
 
 ## 📊 Progression
 
-**Phase 1** : ⬜⬜⬜⬜⬜ 0/15  
-**Phase 2** : ⬜⬜⬜⬜⬜ 0/15  
+**Phase 1** : ✅✅✅✅✅ 15/15 (Complété !)
+**Phase 2** : ✅✅✅✅⬜ 18/22 (82% complété)
 **Phase 3** : ⬜⬜⬜⬜⬜ 0/20  
 **Phase 4** : ⬜⬜⬜⬜⬜ 0/6  
 **Phase 5** : ⬜⬜⬜⬜⬜ 0/15  
 **Phase 6** : ⬜⬜⬜⬜⬜ 0/14  
 
-**Total** : 0/85 tâches
+**Total** : 33/92 tâches (36% complété)
 
 ---
 

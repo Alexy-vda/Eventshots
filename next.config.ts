@@ -1,17 +1,29 @@
-module.exports = {
+import type { NextConfig } from "next";
+
+const config: NextConfig = {
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "cdn.eventshots.dev" },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
+        pathname: "/f/**",
+      },
+      {
+        protocol: "https",
+        hostname: "uploadthing.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
     formats: ["image/avif", "image/webp"],
-    deviceSizes: [360, 640, 828, 1080, 1200, 1600, 1920],
-    imageSizes: [16, 32, 64, 96, 128, 256, 384],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    qualities: [75, 85, 90],
   },
-  // Autoriser les requêtes cross-origin en dev depuis votre réseau local
-  allowedDevOrigins: [
-    "192.168.32.169",
-    "http://192.168.32.169",
-    "http://192.168.32.169:3000",
-  ],
 };
+
+export default config;

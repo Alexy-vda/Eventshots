@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -56,61 +57,52 @@ export function RegisterForm() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="space-y-4 border rounded-xl p-6 shadow-sm"
-    >
-      <div className="space-y-2">
-        <label htmlFor="name" className="text-sm font-medium">
-          Nom complet
-        </label>
-        <input
-          id="name"
-          type="text"
-          className="w-full rounded-md border px-3 py-2"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          autoComplete="name"
-          placeholder="John Doe"
-        />
-      </div>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <Input
+        id="name"
+        type="text"
+        label="Nom complet"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        autoComplete="name"
+        placeholder="John Doe"
+        required
+      />
+
+      <Input
+        id="email"
+        type="email"
+        label="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        autoComplete="email"
+        placeholder="john@example.com"
+        required
+      />
 
       <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          className="w-full rounded-md border px-3 py-2"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoComplete="email"
-          placeholder="john@example.com"
-          required
-        />
-      </div>
-
-      <div className="space-y-2">
-        <label htmlFor="password" className="text-sm font-medium">
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700"
+        >
           Mot de passe
         </label>
         <div className="flex items-center gap-2">
           <input
             id="password"
             type={showPwd ? "text" : "password"}
-            className="w-full rounded-md border px-3 py-2"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="new-password"
             required
             minLength={6}
-            placeholder="••••••"
+            placeholder="Minimum 6 caractères"
           />
           <button
             type="button"
             onClick={() => setShowPwd((s) => !s)}
-            className="text-sm px-2 py-1 border rounded-md"
+            className="px-3 py-2 text-lg border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             aria-label={showPwd ? "Masquer" : "Afficher"}
           >
             {showPwd ? "🙈" : "👁️"}
@@ -119,42 +111,41 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="confirmPassword" className="text-sm font-medium">
+        <label
+          htmlFor="confirmPassword"
+          className="block text-sm font-medium text-gray-700"
+        >
           Confirmer le mot de passe
         </label>
         <input
           id="confirmPassword"
           type={showPwd ? "text" : "password"}
-          className="w-full rounded-md border px-3 py-2"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-400"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           autoComplete="new-password"
           required
           minLength={6}
-          placeholder="••••••"
+          placeholder="Confirmez votre mot de passe"
         />
       </div>
 
       {!!err && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded p-2">
-          {err}
-        </p>
+        <div className="flex items-center space-x-2 text-sm text-terracotta bg-terracotta/10 border border-terracotta/30 rounded-lg p-3">
+          <span className="text-xl">⚠️</span>
+          <span>{err}</span>
+        </div>
       )}
 
-      <button
+      <Button
         type="submit"
-        disabled={loading}
-        className="w-full rounded-md bg-black text-white py-2 font-medium disabled:opacity-50"
+        variant="primary"
+        size="lg"
+        className="w-full"
+        isLoading={loading}
       >
-        {loading ? "Inscription..." : "S'inscrire"}
-      </button>
-
-      <p className="text-center text-sm text-zinc-600">
-        Déjà un compte ?{" "}
-        <Link href="/login" className="text-black font-medium hover:underline">
-          Se connecter
-        </Link>
-      </p>
+        {loading ? "Inscription en cours..." : "Créer mon compte"}
+      </Button>
     </form>
   );
 }

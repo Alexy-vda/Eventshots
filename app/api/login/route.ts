@@ -66,6 +66,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       ok: true,
+      token: access, // Envoyer aussi le token pour les client components
       user: {
         id: user.id,
         email: user.email,

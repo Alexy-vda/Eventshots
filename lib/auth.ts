@@ -65,3 +65,19 @@ export function verifyRefresh(token: string): RefreshTokenPayload {
     email: payload.email as string,
   };
 }
+
+// Helper pour vérifier un token et retourner le userId
+export async function verifyToken(
+  token: string
+): Promise<{ userId: string; email: string } | null> {
+  try {
+    const payload = verifyAccess(token);
+    return {
+      userId: payload.sub,
+      email: payload.email,
+    };
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    return null;
+  }
+}

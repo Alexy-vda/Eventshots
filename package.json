@@ -8,15 +8,21 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "overrides": {
+    "effect": "3.18.4"
+  },
   "dependencies": {
     "@prisma/client": "^6.18.0",
+    "@uploadthing/react": "^7.3.3",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.3",
     "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.1.6",
     "next": "16.0.0",
     "prisma": "^6.18.0",
     "react": "19.2.0",
     "react-dom": "19.2.0",
+    "uploadthing": "^7.7.4",
     "zod": "^4.1.12"
   },
   "devDependencies": {

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 
 export function LoginForm() {
   const router = useRouter();
@@ -26,6 +28,17 @@ export function LoginForm() {
         const data = await res.json();
         throw new Error(data.error || "Identifiants incorrects");
       }
+
+      // Stocker le token dans localStorage pour les client components
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem("access_token", data.token);
+        localStorage.setItem("username", email.split("@")[0]);
+
+        // Émettre un événement pour notifier la Navbar
+        window.dispatchEvent(new Event("auth-change"));
+      }
+
       router.push("/dashboard");
     } catch (error) {
       const message =
@@ -37,38 +50,40 @@ export function LoginForm() {
   }
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="space-y-4 border rounded-xl p-6 shadow-sm"
-    >
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Email</label>
-        <input
-          type="email"
-          className="w-full rounded-md border px-3 py-2"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoComplete="email"
-          required
-        />
-      </div>
+    <form onSubmit={onSubmit} className="space-y-6">
+      <Input
+        type="email"
+        label="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        autoComplete="email"
+        required
+        placeholder="votre@email.com"
+      />
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">Mot de passe</label>
+        <label className="block text-sm font-semibold text-navy">
+          Mot de passe
+        </label>
         <div className="flex items-center gap-2">
           <input
             type={showPwd ? "text" : "password"}
-            className="w-full rounded-md border px-3 py-2"
+            className="flex-1 px-4 py-2.5 border-2 border-sage/30 rounded-lg 
+                     focus:ring-2 focus:ring-terracotta focus:border-terracotta 
+                     bg-white text-navy placeholder:text-navy/40
+                     transition-all hover:border-sage/50"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
             required
             minLength={6}
+            placeholder="Votre mot de passe"
           />
           <button
             type="button"
             onClick={() => setShowPwd((s) => !s)}
-            className="text-sm px-2 py-1 border rounded-md"
+            className="px-3 py-2.5 text-lg border-2 border-sage/30 rounded-lg 
+                     hover:bg-gold/20 hover:border-sage/50 transition-all"
             aria-label={showPwd ? "Masquer" : "Afficher"}
           >
             {showPwd ? "🙈" : "👁️"}
@@ -77,18 +92,24 @@ export function LoginForm() {
       </div>
 
       {!!err && (
-        <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded p-2">
-          {err}
-        </p>
+        <div
+          className="flex items-center space-x-3 text-sm text-terracotta 
+                      bg-terracotta/10 border-2 border-terracotta/30 rounded-lg p-4"
+        >
+          <span className="text-xl">⚠️</span>
+          <span className="font-medium">{err}</span>
+        </div>
       )}
 
-      <button
+      <Button
         type="submit"
-        disabled={loading}
-        className="w-full rounded-md bg-black text-white py-2 font-medium disabled:opacity-50"
+        variant="primary"
+        size="lg"
+        className="w-full"
+        isLoading={loading}
       >
-        {loading ? "Connexion..." : "Se connecter"}
-      </button>
+        {loading ? "Connexion en cours..." : "Se connecter"}
+      </Button>
     </form>
   );
 }
