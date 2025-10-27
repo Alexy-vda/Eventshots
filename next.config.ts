@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 
 const config: NextConfig = {
+  output: "standalone",
   turbopack: {},
   webpack: (config, { isServer }) => {
     if (isServer) {
