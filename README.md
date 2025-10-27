@@ -77,6 +77,7 @@ A modern Next.js application for creating photo galleries for your events and ea
 
 - Node.js 18+
 - npm/yarn/pnpm
+- Docker & Docker Compose (for PostgreSQL)
 - Cloudflare R2 account (free up to 10 GB)
 
 ### 1. Clone the project
@@ -97,8 +98,8 @@ npm install
 Create a `.env.local` file at the root:
 
 ```env
-# Database (SQLite for POC)
-DATABASE_URL="file:./prisma/dev.db"
+# PostgreSQL (local via Docker)
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/eventshot"
 
 # JWT Secrets (generate with: openssl rand -base64 32)
 JWT_SECRET=your-super-secret-jwt-key-here
@@ -115,14 +116,24 @@ R2_PUBLIC_URL=https://pub-xxxxxxxxx.r2.dev
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
-### 4. Initialize database
+### 4. Start PostgreSQL
+
+```bash
+# Start PostgreSQL container
+docker-compose up -d
+
+# Verify it's running
+docker ps
+```
+
+### 5. Initialize database
 
 ```bash
 npx prisma generate
 npx prisma db push
 ```
 
-### 5. Start development server
+### 6. Start development server
 
 ```bash
 npm run dev
@@ -245,26 +256,68 @@ Guests can view and download without an account
 
 ---
 
-## 🚀 Deployment (Demo Only)
+## 🚀 Deployment
 
-### Option 1: Vercel (Recommended)
+### Vercel (Recommended)
+
+**1. Create Vercel Postgres Database**
 
 ```bash
-# 1. Install Vercel CLI
+# Install Vercel CLI
 npm i -g vercel
 
-# 2. Deploy
-vercel
+# Login and link project
+vercel login
+vercel link
 
-# 3. Configure environment variables via dashboard
+# Via Vercel Dashboard:
+# Your Project → Storage → Create Database → Postgres
+# This auto-configures DATABASE_URL
 ```
 
-⚠️ **Important**: For demo purposes only!
+**2. Configure Environment Variables**
 
-- SQLite doesn't work in production on Vercel
-- Migrate to PostgreSQL (Vercel Postgres/Supabase/Neon) for real deployment
+In Vercel Dashboard → Settings → Environment Variables:
 
-### Option 2: Docker (Local/VPS)
+```env
+# Auto-configured by Vercel Postgres:
+# ✅ DATABASE_URL (already set)
+
+# Add manually:
+JWT_SECRET=your-super-secret-jwt-key
+REFRESH_TOKEN_SECRET=your-super-secret-refresh-key
+R2_ACCOUNT_ID=...
+R2_ACCESS_KEY_ID=...
+R2_SECRET_ACCESS_KEY=...
+R2_BUCKET_NAME=...
+R2_PUBLIC_URL=...
+NEXT_PUBLIC_BASE_URL=$VERCEL_URL
+```
+
+**3. Push Database Schema**
+
+```bash
+npx prisma db push
+```
+
+**4. Deploy**
+
+```bash
+vercel --prod
+```
+
+---
+
+### Local Production Build
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+### Docker (VPS Deployment)
 
 ```dockerfile
 # Dockerfile already configured
@@ -278,7 +331,7 @@ docker run -p 3000:3000 --env-file .env.local eventshot
 
 ### Technical
 
-- **SQLite**: Not suitable for production multi-instance
+- **PostgreSQL required**: Use Vercel Postgres, Supabase, or Neon for deployment
 - **No testing**: No automated tests (manual only)
 - **No monitoring**: No centralized logging
 - **Single region**: R2 bucket not replicated
@@ -336,10 +389,12 @@ docker run -p 3000:3000 --env-file .env.local eventshot
 - Edge network performance
 - 10 GB free/month
 
-**Why SQLite for POC?**
+**Why PostgreSQL?**
 
-- Zero config
-- Easy to migrate to Postgres
+- Production-ready (Vercel, Supabase, Neon support)
+- ACID compliant
+- Better for multi-user scenarios
+- Easy to scale
 
 ---
 
