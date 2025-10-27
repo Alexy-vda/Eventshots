@@ -5,12 +5,11 @@ const config: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "utfs.io",
-        pathname: "/f/**",
+        hostname: "pub-*.r2.dev",
       },
       {
         protocol: "https",
-        hostname: "uploadthing.com",
+        hostname: "pub-7bdda15fb60a422280af81fc94c91974.r2.dev",
       },
       {
         protocol: "https",
@@ -18,11 +17,10 @@ const config: NextConfig = {
       },
     ],
     formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
-    qualities: [75, 85, 90],
   },
 };
 

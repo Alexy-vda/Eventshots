@@ -12,19 +12,15 @@ export default async function LoginPage({
 
   return (
     <main className="min-h-screen flex bg-gray-50">
-      {/* Left Side - Hero Section */}
       <div
         className="hidden lg:flex lg:w-1/3 relative text-white p-12 flex-col justify-between bg-cover bg-center"
         style={{
           backgroundImage: `url("https://images.unsplash.com/photo-1521856729154-7118f7181af9?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=735")`,
         }}
       >
-        {/* Dark Gradient Overlay */}
         <div className="absolute inset-0 bg-linear-to-br from-black/20 to-black/70"></div>
 
-        {/* Content */}
         <div className="relative z-10 flex flex-col justify-between h-full">
-          {/* Logo */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[#6366f1] rounded-lg flex items-center justify-center">
               <svg
@@ -50,7 +46,6 @@ export default async function LoginPage({
             <span className="text-xl font-bold">EventShot</span>
           </div>
 
-          {/* Quote */}
           <div className="space-y-6">
             <div className="space-y-4">
               <h2 className="text-4xl font-bold leading-tight text-gray-100!">
@@ -68,10 +63,8 @@ export default async function LoginPage({
         </div>
       </div>
 
-      {/* Right Side - Form */}
       <div className="flex-1 flex items-center justify-center p-8 lg:p-12">
         <div className="w-full max-w-md space-y-8">
-          {/* Mobile Logo */}
           <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
             <div className="w-10 h-10 bg-[#6366f1] rounded-lg flex items-center justify-center">
               <svg
@@ -97,7 +90,6 @@ export default async function LoginPage({
             <span className="text-2xl font-bold text-[#1a1a1a]">EventShot</span>
           </div>
 
-          {/* Header */}
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-[#1a1a1a]">
               Bienvenue sur EventShot
@@ -107,7 +99,6 @@ export default async function LoginPage({
             </p>
           </div>
 
-          {/* Success Message */}
           {params.registered && (
             <div className="bg-[#f0fdf4] border border-[#22c55e]/20 text-[#22c55e] px-4 py-3 rounded-lg text-sm">
               <span className="font-medium">
@@ -117,10 +108,8 @@ export default async function LoginPage({
             </div>
           )}
 
-          {/* Login Form */}
           <LoginForm />
 
-          {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200"></div>
@@ -130,7 +119,6 @@ export default async function LoginPage({
             </div>
           </div>
 
-          {/* Sign Up Link */}
           <p className="text-center text-sm text-gray-600">
             Pas encore de compte ?{" "}
             <Link
@@ -141,7 +129,6 @@ export default async function LoginPage({
             </Link>
           </p>
 
-          {/* Demo Account */}
           <div className="text-center text-xs text-gray-500 pt-4 border-t border-gray-200">
             <p className="mb-2 font-medium">Compte de démonstration :</p>
             <div className="flex items-center justify-center gap-2">

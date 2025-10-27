@@ -2,21 +2,20 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages*.{js,ts,jsx,tsx,mdx}",
+    "./components*.{js,ts,jsx,tsx,mdx}",
+    "./app*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
-        // Palette chaleureuse
+
         cream: "#f4f1de",
         terracotta: "#e07a5f",
         navy: "#3d405b",
         sage: "#81b29a",
         gold: "#f2cc8f",
 
-        // Semantic colors
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {

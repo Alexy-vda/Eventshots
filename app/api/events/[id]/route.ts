@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { verifyToken } from "@/lib/auth";
 
-// GET /api/events/[id] - Récupérer un événement spécifique
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -10,7 +9,6 @@ export async function GET(
   try {
     const { id } = await params;
 
-    // Vérifier l'authentification
     const token = req.headers.get("authorization")?.replace("Bearer ", "");
     if (!token) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
@@ -21,7 +19,6 @@ export async function GET(
       return NextResponse.json({ error: "Token invalide" }, { status: 401 });
     }
 
-    // Récupérer l'événement
     const event = await prisma.event.findUnique({
       where: { id },
     });
@@ -33,7 +30,6 @@ export async function GET(
       );
     }
 
-    // Vérifier que l'événement appartient à l'utilisateur
     if (event.userId !== payload.userId) {
       return NextResponse.json(
         { error: "Accès non autorisé" },
@@ -51,7 +47,6 @@ export async function GET(
   }
 }
 
-// DELETE /api/events/[id] - Supprimer un événement
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -59,7 +54,6 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    // Vérifier l'authentification
     const token = req.headers.get("authorization")?.replace("Bearer ", "");
     if (!token) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
@@ -70,7 +64,6 @@ export async function DELETE(
       return NextResponse.json({ error: "Token invalide" }, { status: 401 });
     }
 
-    // Vérifier que l'événement existe et appartient à l'utilisateur
     const event = await prisma.event.findUnique({
       where: { id },
     });
@@ -89,7 +82,6 @@ export async function DELETE(
       );
     }
 
-    // Supprimer l'événement
     await prisma.event.delete({
       where: { id },
     });
@@ -106,7 +98,6 @@ export async function DELETE(
   }
 }
 
-// PATCH /api/events/[id] - Modifier un événement
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -114,7 +105,6 @@ export async function PATCH(
   try {
     const { id } = await params;
 
-    // Vérifier l'authentification
     const token = req.headers.get("authorization")?.replace("Bearer ", "");
     if (!token) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
@@ -125,7 +115,6 @@ export async function PATCH(
       return NextResponse.json({ error: "Token invalide" }, { status: 401 });
     }
 
-    // Vérifier que l'événement existe et appartient à l'utilisateur
     const event = await prisma.event.findUnique({
       where: { id },
     });
@@ -144,7 +133,6 @@ export async function PATCH(
       );
     }
 
-    // Mettre à jour l'événement
     const body = await req.json();
     const updatedEvent = await prisma.event.update({
       where: { id },

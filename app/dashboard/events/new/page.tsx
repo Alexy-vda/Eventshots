@@ -17,7 +17,6 @@ export default function NewEventPage() {
     const formData = new FormData(e.currentTarget);
     const dateValue = formData.get("date") as string;
 
-    // Convertir datetime-local en ISO string
     const date = new Date(dateValue).toISOString();
 
     const data = {
@@ -28,7 +27,7 @@ export default function NewEventPage() {
     };
 
     try {
-      // Récupérer le token du localStorage
+
       const token = localStorage.getItem("access_token");
       if (!token) {
         router.push("/login");
@@ -49,7 +48,6 @@ export default function NewEventPage() {
         throw new Error(result.error || "Erreur lors de la création");
       }
 
-      // Rediriger vers le dashboard avec refresh
       router.push("/dashboard");
       router.refresh();
     } catch (err) {

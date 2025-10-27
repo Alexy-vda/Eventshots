@@ -1,155 +1,122 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
+import PhotoCarousel from "./PhotoCarousel";
 import toast from "react-hot-toast";
+import {
+  downloadSinglePhoto,
+  downloadPhotosAsZip,
+  trackPhotoDownload,
+} from "@/lib/downloads";
 import type { Photo } from "@/types";
 
 interface PublicPhotoGalleryProps {
   photos: Photo[];
-  eventId?: string; // Optionnel, pour un usage futur si nécessaire
+  eventName: string;
 }
 
-export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
-  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
-  const [downloading, setDownloading] = useState(false);
+export function PublicPhotoGallery({
+  photos,
+  eventName,
+}: PublicPhotoGalleryProps) {
+  const [showCarousel, setShowCarousel] = useState(false);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+  const [downloadingZip, setDownloadingZip] = useState(false);
+  const [zipProgress, setZipProgress] = useState({ current: 0, total: 0 });
 
-  // Index de la photo actuellement sélectionnée
-  const currentPhotoIndex = useMemo(() => {
-    if (!selectedPhoto) return -1;
-    return photos.findIndex((p) => p.id === selectedPhoto.id);
-  }, [selectedPhoto, photos]);
+  const handlePhotoClick = (index: number) => {
+    setSelectedPhotoIndex(index);
+    setShowCarousel(true);
+  };
 
-  // Support navigation clavier (flèches gauche/droite, Escape)
-  useEffect(() => {
-    if (!selectedPhoto || currentPhotoIndex === -1) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        e.preventDefault();
-        const prevIndex =
-          (currentPhotoIndex - 1 + photos.length) % photos.length;
-        setSelectedPhoto(photos[prevIndex]);
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault();
-        const nextIndex = (currentPhotoIndex + 1) % photos.length;
-        setSelectedPhoto(photos[nextIndex]);
-      } else if (e.key === "Escape") {
-        e.preventDefault();
-        setSelectedPhoto(null);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedPhoto, currentPhotoIndex, photos]);
-
-  const handleDownload = async (photo: Photo) => {
+  const handleDownloadPhoto = async (photo: Photo) => {
     try {
-      setDownloading(true);
-
-      // Ouvrir l'image dans un nouvel onglet pour le téléchargement
-      window.open(photo.url, "_blank");
-
-      // Incrémenter le compteur de téléchargements
-      await fetch(`/api/photos/${photo.id}/download`, {
-        method: "POST",
-      });
+      await trackPhotoDownload(photo.id);
+      const success = await downloadSinglePhoto(photo);
+      if (success) {
+        toast.success("Téléchargement lancé");
+      } else {
+        toast.error("Erreur lors du téléchargement");
+      }
     } catch (err) {
-      console.error("Erreur lors du téléchargement:", err);
-    } finally {
-      setDownloading(false);
+      toast.error("Erreur lors du téléchargement");
+      console.error(err);
     }
   };
 
   const handleDownloadAll = async () => {
     if (photos.length === 0) return;
 
-    toast(
-      (t) => (
-        <div className="flex flex-col gap-3">
-          <p className="font-medium">
-            Télécharger {photos.length} photo{photos.length > 1 ? "s" : ""} ?
-          </p>
-          <div className="flex gap-2">
-            <button
-              onClick={() => {
-                toast.dismiss(t.id);
-                proceedDownloadAll();
-              }}
-              className="px-4 py-2 bg-[#6366f1] text-white rounded-md font-medium hover:bg-[#4f46e5] transition-colors"
-            >
-              Confirmer
-            </button>
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="px-4 py-2 bg-[#fafafa] rounded-md text-gray-700 font-medium hover:bg-[#f0f0f0] transition-colors"
-            >
-              Annuler
-            </button>
-          </div>
-        </div>
-      ),
-      {
-        duration: Infinity,
-      }
+    const confirmed = window.confirm(
+      `Télécharger toutes les ${photos.length} photos dans un fichier ZIP ?`
     );
-  };
+    if (!confirmed) return;
 
-  const proceedDownloadAll = async () => {
-    setDownloading(true);
-    toast.loading("Téléchargement en cours...", { id: "download-all" });
+    setDownloadingZip(true);
+    setZipProgress({ current: 0, total: photos.length });
+
+    toast.loading(`Préparation du téléchargement...`, {
+      id: "download-all",
+    });
 
     try {
-      // Télécharger chaque photo une par une
-      for (const photo of photos) {
-        window.open(photo.url, "_blank");
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Délai pour éviter le blocage des popups
-      }
-
-      toast.success(
-        `${photos.length} photo${photos.length > 1 ? "s" : ""} téléchargée${
-          photos.length > 1 ? "s" : ""
-        }`,
-        { id: "download-all" }
+      const success = await downloadPhotosAsZip(
+        photos,
+        eventName,
+        (current, total) => {
+          setZipProgress({ current, total });
+          toast.loading(
+            `Téléchargement: ${current}/${total} photos ajoutées au ZIP`,
+            { id: "download-all" }
+          );
+        }
       );
-    } catch {
-      toast.error("Erreur lors du téléchargement", { id: "download-all" });
-    } finally {
-      setDownloading(false);
-    }
-  };
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + " B";
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+      if (success) {
+        toast.success(
+          `${photos.length} ${
+            photos.length > 1 ? "photos téléchargées" : "photo téléchargée"
+          }`,
+          { id: "download-all" }
+        );
+      } else {
+        toast.error("Erreur lors de la création du ZIP", {
+          id: "download-all",
+        });
+      }
+    } catch (err) {
+      toast.error("Erreur lors du téléchargement", { id: "download-all" });
+      console.error(err);
+    } finally {
+      setDownloadingZip(false);
+      setZipProgress({ current: 0, total: 0 });
+    }
   };
 
   if (photos.length === 0) {
     return (
-      <div className="text-center py-16">
-        <div className="w-20 h-20 mx-auto mb-6 bg-gray-100 rounded-lg flex items-center justify-center">
+      <div className="text-center py-32">
+        <div className="w-24 h-24 mx-auto mb-8 flex items-center justify-center">
           <svg
-            className="w-10 h-10 text-gray-400"
+            className="w-24 h-24 text-gray-300"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            strokeWidth={1}
           >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              strokeWidth={2}
               d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
         </div>
-        <h3 className="text-2xl font-semibold text-gray-700 mb-3">
-          Aucune photo disponible
+        <h3 className="text-xl font-medium text-gray-900 mb-2">
+          Aucune photo pour le moment
         </h3>
-        <p className="text-gray-500 max-w-md mx-auto">
-          Le photographe n&apos;a pas encore uploadé les photos de cet
-          événement. Revenez plus tard !
+        <p className="text-sm text-gray-500 max-w-sm mx-auto">
+          Le photographe n&apos;a pas encore partagé les photos de cet événement
         </p>
       </div>
     );
@@ -157,177 +124,102 @@ export function PublicPhotoGallery({ photos }: PublicPhotoGalleryProps) {
 
   return (
     <>
-      {/* Header avec bouton télécharger tout */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900">
-            Galerie de photos
-          </h2>
-          <p className="text-gray-600 mt-1">
-            {photos.length} photo{photos.length > 1 ? "s" : ""}
-          </p>
-        </div>
+      <div className="fixed top-24 right-6 z-40">
         <button
           onClick={handleDownloadAll}
-          disabled={downloading}
-          className="px-4 py-2 bg-[#6366f1] text-white rounded-md font-medium hover:bg-[#4f46e5] disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+          disabled={downloadingZip}
+          className="flex items-center gap-2 px-5 py-2.5 bg-white backdrop-blur-sm text-gray-900 rounded-full font-medium hover:bg-gray-50 shadow-lg hover:shadow-xl disabled:bg-gray-300 disabled:cursor-not-allowed transition-all border border-gray-200"
         >
-          {downloading ? "Téléchargement..." : "Télécharger tout"}
+          {downloadingZip ? (
+            <>
+              <div className="w-4 h-4 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+              <span className="text-sm">
+                {zipProgress.current}/{zipProgress.total}
+              </span>
+            </>
+          ) : (
+            <>
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
+              <span className="text-sm font-medium">Télécharger tout</span>
+            </>
+          )}
         </button>
       </div>
 
-      {/* Grid de photos */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {photos.map((photo, index) => (
-          <div
-            key={photo.id}
-            className="relative group aspect-square bg-[#fafafa] rounded-lg overflow-hidden cursor-pointer animate-pulse border border-gray-100"
-            onClick={() => setSelectedPhoto(photo)}
-          >
-            <Image
-              src={photo.thumbnailUrl || photo.url}
-              alt={photo.fileName}
-              fill
-              priority={index < 8}
-              className="object-cover transition-all group-hover:scale-105 group-hover:brightness-90"
-              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              quality={75}
-              placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmM2Y0ZjYiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNWU3ZWIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0idXJsKCNnKSIvPjwvc3ZnPg=="
-              onLoadingComplete={(img) => {
-                img.parentElement?.classList.remove("animate-pulse");
+      <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-3">
+        {photos.map((photo, index) => {
+          return (
+            <div
+              key={photo.id}
+              onClick={() => handlePhotoClick(index)}
+              className="relative group break-inside-avoid mb-3 cursor-pointer"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handlePhotoClick(index);
+                }
               }}
-            />
+            >
+              <div className="relative overflow-hidden">
+                <Image
+                  src={photo.displayUrl || photo.url}
+                  alt={photo.fileName}
+                  width={photo.width || 800}
+                  height={photo.height || 600}
+                  priority={index < 8}
+                  className="w-full h-auto transition-all duration-500 group-hover:opacity-90"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                  quality={75}
+                  placeholder={photo.blurDataUrl ? "blur" : "empty"}
+                  blurDataURL={photo.blurDataUrl || undefined}
+                />
 
-            {/* Texte "Voir" au hover - Desktop only */}
-            <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
-              <span className="text-white opacity-0 group-hover:opacity-100 text-sm font-medium transition-opacity bg-black bg-opacity-60 px-4 py-2 rounded-md">
-                Voir
-              </span>
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-100 scale-95">
+                    <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                      <svg
+                        className="w-6 h-6 text-gray-900"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Modal de prévisualisation */}
-      {selectedPhoto && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedPhoto(null)}
-        >
-          {/* Bouton fermer */}
-          <button
-            onClick={() => setSelectedPhoto(null)}
-            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10 transition-colors"
-            aria-label="Fermer"
-          >
-            ×
-          </button>
-
-          {/* Navigation précédent (visible si plusieurs photos) */}
-          {photos.length > 1 && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                const prevIndex =
-                  (currentPhotoIndex - 1 + photos.length) % photos.length;
-                setSelectedPhoto(photos[prevIndex]);
-              }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-4 bg-black bg-opacity-50 hover:bg-opacity-75 text-white rounded-full transition-all hover:scale-110"
-              aria-label="Photo précédente"
-            >
-              <svg
-                className="w-8 h-8"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-          )}
-
-          {/* Navigation suivant (visible si plusieurs photos) */}
-          {photos.length > 1 && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                const nextIndex = (currentPhotoIndex + 1) % photos.length;
-                setSelectedPhoto(photos[nextIndex]);
-              }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-4 bg-black bg-opacity-50 hover:bg-opacity-75 text-white rounded-full transition-all hover:scale-110"
-              aria-label="Photo suivante"
-            >
-              <svg
-                className="w-8 h-8"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          )}
-
-          <div className="max-w-7xl max-h-[90vh] w-full h-full relative">
-            <Image
-              src={selectedPhoto.url}
-              alt={selectedPhoto.fileName}
-              fill
-              priority
-              className="object-contain"
-              onClick={(e) => e.stopPropagation()}
-              quality={90}
-              sizes="100vw"
-            />
-          </div>
-
-          {/* Info bar */}
-          <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white p-4">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <p className="font-medium">{selectedPhoto.fileName}</p>
-                  {photos.length > 1 && (
-                    <span className="text-xs bg-white bg-opacity-20 px-2 py-1 rounded">
-                      {currentPhotoIndex + 1} / {photos.length}
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-gray-300">
-                  {formatFileSize(selectedPhoto.fileSize)}
-                  {selectedPhoto.width && selectedPhoto.height && (
-                    <>
-                      {" "}
-                      • {selectedPhoto.width} × {selectedPhoto.height}px
-                    </>
-                  )}
-                </p>
-              </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDownload(selectedPhoto);
-                }}
-                disabled={downloading}
-                className="px-4 py-2 bg-[#6366f1] text-white rounded-md font-medium hover:bg-[#4f46e5] disabled:bg-gray-300 transition-colors whitespace-nowrap"
-              >
-                {downloading ? "Téléchargement..." : "Télécharger"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <PhotoCarousel
+        photos={photos}
+        initialIndex={selectedPhotoIndex}
+        isOpen={showCarousel}
+        onClose={() => setShowCarousel(false)}
+        onDownload={handleDownloadPhoto}
+      />
     </>
   );
 }

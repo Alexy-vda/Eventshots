@@ -25,7 +25,6 @@ export function LogoutButton({
       localStorage.removeItem("username");
       localStorage.removeItem("token");
 
-      // Émettre un événement pour notifier la Navbar
       window.dispatchEvent(new Event("auth-change"));
     } finally {
       setLoading(false);
@@ -34,7 +33,6 @@ export function LogoutButton({
     }
   }
 
-  // Style dropdown : item de menu simple
   if (variant === "dropdown") {
     return (
       <button
@@ -49,7 +47,6 @@ export function LogoutButton({
     );
   }
 
-  // Style default : bouton normal
   return (
     <Button
       onClick={logout}

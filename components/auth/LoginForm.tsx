@@ -46,7 +46,6 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-      {/* Email Input */}
       <div className="space-y-2">
         <label
           htmlFor="email"
@@ -69,7 +68,6 @@ export function LoginForm() {
         />
       </div>
 
-      {/* Password Input */}
       <div className="space-y-2">
         <label
           htmlFor="password"
@@ -100,7 +98,6 @@ export function LoginForm() {
         </button>
       </div>
 
-      {/* Remember Me & Forgot Password */}
       <div className="flex items-center justify-between">
         <label className="flex items-center gap-3 cursor-pointer">
           <div className="relative">
@@ -133,14 +130,12 @@ export function LoginForm() {
         </button>
       </div>
 
-      {/* Error Message */}
       {!!err && (
         <div className="bg-[#fef2f2] border border-[#ef4444]/20 text-[#ef4444] px-4 py-3 rounded-lg text-sm">
           <span className="font-medium">{err}</span>
         </div>
       )}
 
-      {/* Submit Button */}
       <button
         type="submit"
         disabled={loading}

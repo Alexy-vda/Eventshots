@@ -8,7 +8,6 @@ export async function POST(
   try {
     const { id } = await context.params;
 
-    // Incrémenter le compteur de téléchargements
     await prisma.photo.update({
       where: { id },
       data: {

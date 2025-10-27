@@ -13,13 +13,6 @@ interface OptimizedImageProps {
   onLoadingComplete?: () => void;
 }
 
-/**
- * Composant d'image optimisé avec:
- * - Lazy loading automatique
- * - Blur placeholder
- * - Gestion des erreurs
- * - Skeleton pendant le chargement
- */
 export const OptimizedImage = memo(function OptimizedImage({
   src,
   alt,

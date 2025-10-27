@@ -1,4 +1,4 @@
-// Utilitaires pour les API routes
+
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
@@ -10,9 +10,6 @@ type JsonValue =
   | JsonValue[]
   | { [key: string]: JsonValue };
 
-/**
- * Wrapper pour les handlers d'API avec gestion d'erreurs centralisée
- */
 export function apiHandler<T = JsonValue>(
   handler: (req: Request) => Promise<NextResponse<T>>
 ) {
@@ -22,7 +19,6 @@ export function apiHandler<T = JsonValue>(
     } catch (error) {
       console.error("[API Error]", error);
 
-      // Erreurs de validation Zod
       if (error instanceof ZodError) {
         return NextResponse.json(
           {
@@ -36,7 +32,6 @@ export function apiHandler<T = JsonValue>(
         );
       }
 
-      // Erreurs métier personnalisées
       if (error instanceof ApiError) {
         return NextResponse.json(
           { error: error.message, details: error.details },
@@ -44,7 +39,6 @@ export function apiHandler<T = JsonValue>(
         );
       }
 
-      // Erreur générique
       return NextResponse.json(
         { error: "Une erreur interne est survenue" },
         { status: 500 }
@@ -53,9 +47,6 @@ export function apiHandler<T = JsonValue>(
   };
 }
 
-/**
- * Classe d'erreur personnalisée pour les APIs
- */
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -67,9 +58,6 @@ export class ApiError extends Error {
   }
 }
 
-/**
- * Extraire et vérifier le token d'authentification
- */
 export function extractAuthToken(req: Request): string {
   const authHeader = req.headers.get("authorization");
   if (!authHeader?.startsWith("Bearer ")) {
@@ -78,16 +66,10 @@ export function extractAuthToken(req: Request): string {
   return authHeader.replace("Bearer ", "");
 }
 
-/**
- * Helper pour créer des réponses JSON typées
- */
 export function jsonResponse<T>(data: T, status = 200): NextResponse<T> {
   return NextResponse.json(data, { status });
 }
 
-/**
- * Helper pour créer des réponses d'erreur
- */
 export function errorResponse(
   message: string,
   status = 400,

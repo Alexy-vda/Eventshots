@@ -10,7 +10,6 @@ import {
 } from "@/lib/apiUtils";
 import { checkRateLimit } from "@/lib/rateLimit";
 
-// Schema de validation pour la création d'événement
 const createEventSchema = z.object({
   title: z.string().min(3, "Le titre doit contenir au moins 3 caractères"),
   description: z.string().optional(),
@@ -18,7 +17,6 @@ const createEventSchema = z.object({
   location: z.string().optional(),
 });
 
-// Fonction pour générer un slug unique
 function generateSlug(title: string): string {
   const baseSlug = title
     .toLowerCase()
@@ -30,14 +28,12 @@ function generateSlug(title: string): string {
   return `${baseSlug}-${nanoid(6)}`;
 }
 
-// Fonction pour générer un lien de partage unique
 function generateShareLink(): string {
   return nanoid(12);
 }
 
-// GET /api/events - Récupérer tous les événements de l'utilisateur connecté
 export const GET = apiHandler(async (req: Request) => {
-  // Vérifier l'authentification
+
   const token = extractAuthToken(req);
   const payload = await verifyToken(token);
 
@@ -45,13 +41,11 @@ export const GET = apiHandler(async (req: Request) => {
     throw new ApiError("Token invalide", 401);
   }
 
-  // Rate limiting
   const rateLimit = checkRateLimit(`user:${payload.userId}:events:list`, 100);
   if (rateLimit.limited) {
     throw new ApiError("Trop de requêtes, veuillez réessayer plus tard", 429);
   }
 
-  // Récupérer les événements de l'utilisateur avec le compteur de photos et la première photo
   const events = await prisma.event.findMany({
     where: { userId: payload.userId },
     orderBy: { date: "desc" },
@@ -72,9 +66,8 @@ export const GET = apiHandler(async (req: Request) => {
   return jsonResponse({ events });
 });
 
-// POST /api/events - Créer un nouvel événement
 export const POST = apiHandler(async (req: Request) => {
-  // Vérifier l'authentification
+
   const token = extractAuthToken(req);
   const payload = await verifyToken(token);
 
@@ -82,7 +75,6 @@ export const POST = apiHandler(async (req: Request) => {
     throw new ApiError("Token invalide", 401);
   }
 
-  // Rate limiting
   const rateLimit = checkRateLimit(
     `user:${payload.userId}:events:create`,
     20,
@@ -92,15 +84,12 @@ export const POST = apiHandler(async (req: Request) => {
     throw new ApiError("Trop de requêtes, veuillez réessayer plus tard", 429);
   }
 
-  // Valider les données
   const body = await req.json();
   const validatedData = createEventSchema.parse(body);
 
-  // Générer le slug et le lien de partage
   const slug = generateSlug(validatedData.title);
   const shareLink = generateShareLink();
 
-  // Créer l'événement
   const event = await prisma.event.create({
     data: {
       title: validatedData.title,

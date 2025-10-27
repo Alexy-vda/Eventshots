@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { verifyToken } from "@/lib/auth";
-import { UTApi } from "uploadthing/server";
+import { deleteFromR2 } from "@/lib/r2";
 
-const utapi = new UTApi();
-
-// DELETE /api/photos/[id] - Supprimer une photo
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -13,7 +10,6 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    // Vérifier l'authentification
     const token = req.headers.get("authorization")?.replace("Bearer ", "");
     if (!token) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
@@ -24,7 +20,6 @@ export async function DELETE(
       return NextResponse.json({ error: "Token invalide" }, { status: 401 });
     }
 
-    // Récupérer la photo
     const photo = await prisma.photo.findUnique({
       where: { id },
       include: {
@@ -36,7 +31,6 @@ export async function DELETE(
       return NextResponse.json({ error: "Photo non trouvée" }, { status: 404 });
     }
 
-    // Vérifier que l'événement appartient à l'utilisateur
     if (photo.event.userId !== payload.userId) {
       return NextResponse.json(
         { error: "Accès non autorisé" },
@@ -44,20 +38,13 @@ export async function DELETE(
       );
     }
 
-    // Extraire la clé du fichier de l'URL UploadThing
-    const fileKey = photo.url.split("/").pop();
+    try {
+      await deleteFromR2(photo.url);
+    } catch (err) {
+      console.error("Erreur lors de la suppression du fichier R2:", err);
 
-    // Supprimer le fichier d'UploadThing
-    if (fileKey) {
-      try {
-        await utapi.deleteFiles(fileKey);
-      } catch (err) {
-        console.error("Erreur lors de la suppression du fichier:", err);
-        // Continuer même si la suppression UploadThing échoue
-      }
     }
 
-    // Supprimer la photo de la base de données
     await prisma.photo.delete({
       where: { id },
     });
@@ -74,7 +61,6 @@ export async function DELETE(
   }
 }
 
-// GET /api/photos/[id] - Récupérer une photo spécifique
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ id: string }> }

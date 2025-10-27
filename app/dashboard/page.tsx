@@ -46,7 +46,6 @@ export default async function Dashboard() {
   return (
     <main className="min-h-screen bg-[#f5f5f5]">
       <div className="max-w-6xl mx-auto p-8">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-[#1a1a1a] mb-2">
             Tableau de bord
@@ -56,7 +55,6 @@ export default async function Dashboard() {
           </p>
         </div>
 
-        {/* Actions */}
         <div className="mb-8">
           <Link
             href="/dashboard/events/new"
@@ -66,7 +64,6 @@ export default async function Dashboard() {
           </Link>
         </div>
 
-        {/* Events List */}
         <div className="bg-white rounded-lg p-6">
           <h2 className="text-2xl font-bold text-[#1a1a1a] mb-6">
             Mes événements
@@ -102,7 +99,6 @@ export default async function Dashboard() {
                 const coverImage = event.photos?.[0]?.url;
                 const photoCount = event._count?.photos || 0;
 
-                // Determine gradient colors based on event title hash for consistency
                 const gradients = [
                   "from-[#6366f1] to-[#8b5cf6]",
                   "from-[#ec4899] to-[#f43f5e]",
@@ -119,9 +115,8 @@ export default async function Dashboard() {
                     href={`/dashboard/events/${event.id}`}
                     className="block bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
                   >
-                    {/* Cover Image or Placeholder */}
                     <div
-                      className={`relative h-48 bg-gradient-to-br ${gradient}`}
+                      className={`relative h-48 bg-linear-to-br ${gradient}`}
                     >
                       {coverImage ? (
                         <>
@@ -129,7 +124,7 @@ export default async function Dashboard() {
                             className="absolute inset-0 bg-cover bg-center"
                             style={{ backgroundImage: `url(${coverImage})` }}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                         </>
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
@@ -155,7 +150,6 @@ export default async function Dashboard() {
                         </div>
                       )}
 
-                      {/* Photo count badge */}
                       <div className="absolute top-3 right-3">
                         <span className="inline-flex items-center gap-1 px-2 py-1 bg-black/60 backdrop-blur-sm text-white rounded-md text-xs font-medium">
                           <svg
@@ -176,7 +170,6 @@ export default async function Dashboard() {
                       </div>
                     </div>
 
-                    {/* Event Info */}
                     <div className="p-4">
                       <h3 className="text-lg font-semibold text-[#1a1a1a] mb-2 line-clamp-1">
                         {event.title}

@@ -8,13 +8,13 @@ export function useAuth() {
   const router = useRouter();
 
   useEffect(() => {
-    // Vérifier le token toutes les 5 minutes
+
     const interval = setInterval(async () => {
       const token = localStorage.getItem("access_token");
       if (token) {
         const refreshed = await refreshAccessToken();
         if (!refreshed) {
-          // Si le refresh échoue, déconnecter
+
           localStorage.removeItem("access_token");
           localStorage.removeItem("username");
           router.push("/login");

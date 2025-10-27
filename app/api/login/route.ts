@@ -1,4 +1,4 @@
-// app/api/login/route.ts
+
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { z } from "zod";
@@ -6,7 +6,6 @@ import bcrypt from "bcryptjs";
 import { signAccess, signRefresh } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 
-// Schéma de validation
 const loginSchema = z.object({
   email: z.string().email("Email invalide"),
   password: z.string().min(1, "Le mot de passe est requis"),
@@ -16,10 +15,8 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // Validation avec Zod
     const validatedData = loginSchema.parse(body);
 
-    // Chercher l'utilisateur dans la DB
     const user = await prisma.user.findUnique({
       where: { email: validatedData.email },
     });
@@ -31,7 +28,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Vérifier le mot de passe
     const isPasswordValid = await bcrypt.compare(
       validatedData.password,
       user.passwordHash
@@ -44,7 +40,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Générer les tokens JWT
     const access = signAccess({ sub: user.id, email: user.email });
     const refresh = signRefresh({ sub: user.id, email: user.email });
 
@@ -74,7 +69,7 @@ export async function POST(req: Request) {
       },
     });
   } catch (error) {
-    // Erreur de validation Zod
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: error.issues[0].message },
@@ -82,7 +77,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Autres erreurs
     console.error("[LOGIN] Error:", error);
     return NextResponse.json(
       { error: "Erreur lors de la connexion" },

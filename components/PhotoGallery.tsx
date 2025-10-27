@@ -21,19 +21,16 @@ export function PhotoGallery({
   const [deletedPhotos, setDeletedPhotos] = useState<Set<string>>(new Set());
   const [photoToDelete, setPhotoToDelete] = useState<string | null>(null);
 
-  // Optimistic UI: filter out deleted photos
   const visiblePhotos = useMemo(
     () => photos.filter((photo) => !deletedPhotos.has(photo.id)),
     [photos, deletedPhotos]
   );
 
-  // Navigation entre photos
   const currentPhotoIndex = useMemo(() => {
     if (!selectedPhoto) return -1;
     return visiblePhotos.findIndex((p) => p.id === selectedPhoto.id);
   }, [selectedPhoto, visiblePhotos]);
 
-  // Support navigation clavier (flèches gauche/droite, Escape)
   useEffect(() => {
     if (!selectedPhoto || currentPhotoIndex === -1) return;
 
@@ -67,21 +64,17 @@ export function PhotoGallery({
     const photoId = photoToDelete;
     setPhotoToDelete(null);
 
-    // Optimistic update: immediately remove from UI
     setDeletedPhotos((prev) => new Set(prev).add(photoId));
     setDeleting(photoId);
 
     try {
       await onDelete(photoId);
-      // Toast géré par le parent (page.tsx)
     } catch {
-      // Rollback on error: restore photo in UI
       setDeletedPhotos((prev) => {
         const next = new Set(prev);
         next.delete(photoId);
         return next;
       });
-      // Toast d'erreur géré par le parent
     } finally {
       setDeleting(null);
     }
@@ -126,7 +119,6 @@ export function PhotoGallery({
 
   return (
     <>
-      {/* Grid de photos */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {visiblePhotos.map((photo, index) => (
           <div
@@ -134,7 +126,6 @@ export function PhotoGallery({
             className="relative group aspect-square bg-[#fafafa] rounded-lg overflow-hidden cursor-pointer animate-pulse border border-gray-100"
             onClick={() => setSelectedPhoto(photo)}
           >
-            {/* Image */}
             <Image
               src={photo.thumbnailUrl || photo.url}
               alt={photo.fileName}
@@ -150,14 +141,12 @@ export function PhotoGallery({
               }}
             />
 
-            {/* Overlay on hover - Desktop only */}
             <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
               <span className="text-white opacity-0 group-hover:opacity-100 text-sm font-medium transition-opacity bg-black bg-opacity-60 px-4 py-2 rounded-md">
                 Voir
               </span>
             </div>
 
-            {/* Explicit deletion overlay - visible without hover */}
             {deleting === photo.id && (
               <div className="absolute inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center z-30 pointer-events-none">
                 <div className="w-8 h-8 border-3 border-white border-t-transparent rounded-full animate-spin mb-2"></div>
@@ -167,7 +156,6 @@ export function PhotoGallery({
               </div>
             )}
 
-            {/* Delete button - Always visible on mobile, hover on desktop */}
             {showDelete && (
               <button
                 onClick={(e) => {
@@ -200,13 +188,11 @@ export function PhotoGallery({
         ))}
       </div>
 
-      {/* Modal de prévisualisation */}
       {selectedPhoto && (
         <div
           className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedPhoto(null)}
         >
-          {/* Bouton fermer */}
           <button
             onClick={() => setSelectedPhoto(null)}
             className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-10 transition-colors"
@@ -215,7 +201,6 @@ export function PhotoGallery({
             ×
           </button>
 
-          {/* Navigation précédent (visible si plusieurs photos) */}
           {visiblePhotos.length > 1 && (
             <button
               onClick={(e) => {
@@ -244,7 +229,6 @@ export function PhotoGallery({
             </button>
           )}
 
-          {/* Navigation suivant (visible si plusieurs photos) */}
           {visiblePhotos.length > 1 && (
             <button
               onClick={(e) => {
@@ -285,7 +269,6 @@ export function PhotoGallery({
             />
           </div>
 
-          {/* Info bar */}
           <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-75 text-white p-4">
             <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex-1">

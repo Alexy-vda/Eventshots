@@ -1,5 +1,4 @@
-// Types partagés pour toute l'application
-// Cela évite la duplication et assure la cohérence
+
 
 export interface User {
   id: string;
@@ -26,7 +25,9 @@ export interface Event {
 export interface Photo {
   id: string;
   url: string;
+  displayUrl?: string | null;
   thumbnailUrl?: string | null;
+  blurDataUrl?: string | null;
   fileName: string;
   fileSize: number;
   width?: number | null;

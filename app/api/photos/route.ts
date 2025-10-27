@@ -3,7 +3,6 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { verifyToken } from "@/lib/auth";
 
-// Schema de validation pour l'upload de photos
 const uploadPhotoSchema = z.object({
   eventId: z.string(),
   url: z.string().url(),
@@ -14,12 +13,10 @@ const uploadPhotoSchema = z.object({
   height: z.number().int().positive().optional(),
 });
 
-// POST /api/photos - Sauvegarder les métadonnées d'une photo uploadée
 export async function POST(req: Request) {
   try {
     console.log("[PHOTOS POST] Début de la requête");
 
-    // Vérifier l'authentification
     const token = req.headers.get("authorization")?.replace("Bearer ", "");
     if (!token) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
@@ -32,11 +29,9 @@ export async function POST(req: Request) {
 
     console.log("[PHOTOS POST] User authentifié:", payload.userId);
 
-    // Valider les données
     const body = await req.json();
     const validatedData = uploadPhotoSchema.parse(body);
 
-    // Vérifier que l'événement existe et appartient à l'utilisateur
     const event = await prisma.event.findUnique({
       where: { id: validatedData.eventId },
     });
@@ -55,7 +50,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Créer la photo dans la base de données
     const photo = await prisma.photo.create({
       data: {
         eventId: validatedData.eventId,
@@ -94,7 +88,6 @@ export async function POST(req: Request) {
   }
 }
 
-// GET /api/photos?eventId=xxx - Récupérer toutes les photos d'un événement
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -107,7 +100,6 @@ export async function GET(req: Request) {
       );
     }
 
-    // Vérifier que l'événement existe
     const event = await prisma.event.findUnique({
       where: { id: eventId },
     });
@@ -119,7 +111,6 @@ export async function GET(req: Request) {
       );
     }
 
-    // Récupérer les photos de l'événement
     const photos = await prisma.photo.findMany({
       where: { eventId },
       orderBy: { createdAt: "desc" },

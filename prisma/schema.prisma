@@ -50,10 +50,12 @@ model Event {
 model Photo {
   id             String   @id @default(cuid())
   eventId        String
-  url            String   // URL de l'image stockée (UploadThing, Cloudinary, etc.)
-  thumbnailUrl   String?  // URL de la miniature
+  url            String   // URL de l'image ORIGINALE (20MB, pour téléchargement 100%)
+  displayUrl     String?  // URL OPTIMISÉE 1920px WebP (~400KB, pour affichage rapide)
+  thumbnailUrl   String?  // URL de la miniature (future utilisation)
+  blurDataUrl    String?  // Blur placeholder 10x10 pour le chargement progressif
   fileName       String   // Nom du fichier original
-  fileSize       Int      // Taille du fichier en octets
+  fileSize       Int      // Taille du fichier original en octets
   width          Int?     // Largeur de l'image
   height         Int?     // Hauteur de l'image
   downloadCount  Int      @default(0) // Nombre de téléchargements

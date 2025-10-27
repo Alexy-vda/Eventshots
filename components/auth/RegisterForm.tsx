@@ -18,7 +18,6 @@ export function RegisterForm() {
     setLoading(true);
     setErr(null);
 
-    // Validation côté client
     if (password !== confirmPassword) {
       setErr("Les mots de passe ne correspondent pas");
       setLoading(false);
@@ -43,7 +42,6 @@ export function RegisterForm() {
         throw new Error(data.error || "Inscription échouée");
       }
 
-      // Inscription réussie, rediriger vers login
       router.push("/login?registered=true");
     } catch (error) {
       const message =
@@ -56,7 +54,6 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-5">
-      {/* Name Input */}
       <div className="space-y-2">
         <label
           htmlFor="name"
@@ -79,7 +76,6 @@ export function RegisterForm() {
         />
       </div>
 
-      {/* Email Input */}
       <div className="space-y-2">
         <label
           htmlFor="email"
@@ -102,7 +98,6 @@ export function RegisterForm() {
         />
       </div>
 
-      {/* Password Input */}
       <div className="space-y-2">
         <label
           htmlFor="password"
@@ -126,7 +121,6 @@ export function RegisterForm() {
         />
       </div>
 
-      {/* Confirm Password Input */}
       <div className="space-y-2">
         <label
           htmlFor="confirmPassword"
@@ -157,14 +151,12 @@ export function RegisterForm() {
         </button>
       </div>
 
-      {/* Error Message */}
       {!!err && (
         <div className="bg-[#fef2f2] border border-[#ef4444]/20 text-[#ef4444] px-4 py-3 rounded-lg text-sm">
           <span className="font-medium">{err}</span>
         </div>
       )}
 
-      {/* Submit Button */}
       <button
         type="submit"
         disabled={loading}

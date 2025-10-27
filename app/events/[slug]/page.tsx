@@ -8,10 +8,8 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// ISR: Revalider toutes les 60 secondes
 export const revalidate = 60;
 
-// Générer les métadonnées dynamiques pour le SEO
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -43,7 +41,6 @@ export async function generateMetadata({
 export default async function PublicEventPage({ params }: PageProps) {
   const { slug } = await params;
 
-  // Récupérer l'événement depuis la base de données avec ses photos
   const event = await prisma.event.findUnique({
     where: { slug },
     include: {
@@ -64,149 +61,99 @@ export default async function PublicEventPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5]">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 py-6">
+    <div className="min-h-screen bg-white">
+      <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-30">
+        <div className="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link
             href="/"
-            className="text-[#6366f1] hover:text-[#4f46e5] font-medium"
+            className="text-gray-900 hover:text-gray-600 font-medium text-sm flex items-center gap-2 transition-colors"
           >
-            ← Retour à l&apos;accueil
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Retour
           </Link>
+          <div className="text-center">
+            <h1 className="text-lg font-semibold text-gray-900">
+              {event.title}
+            </h1>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {event.photos.length} photo{event.photos.length > 1 ? "s" : ""}
+            </p>
+          </div>
+          <div className="w-20"></div> {}
         </div>
       </header>
 
-      {/* Event Info */}
-      <div className="max-w-6xl mx-auto px-4 py-12">
-        <div className="bg-white rounded-lg p-8 md:p-12 mb-8">
-          <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              {event.title}
-            </h1>
+      <main className="pt-20 px-6 pb-12 max-w-screen-2xl mx-auto">
+        <PublicPhotoGallery
+          photos={event.photos.map((photo) => ({
+            ...photo,
+            createdAt: photo.createdAt.toISOString(),
+          }))}
+          eventName={event.title}
+        />
+      </main>
 
-            {event.description && (
-              <p className="text-xl text-gray-600 mb-6">{event.description}</p>
-            )}
-
-            <div className="flex flex-wrap gap-6 text-gray-700">
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-6 h-6 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                <div>
-                  <p className="text-sm text-gray-500">Date</p>
-                  <p className="font-medium">
-                    {new Date(event.date).toLocaleDateString("fr-FR", {
-                      weekday: "long",
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </p>
-                </div>
-              </div>
-
-              {event.location && (
-                <div className="flex items-center gap-2">
-                  <svg
-                    className="w-6 h-6 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                  <div>
-                    <p className="text-sm text-gray-500">Lieu</p>
-                    <p className="font-medium">{event.location}</p>
-                  </div>
-                </div>
-              )}
-
-              <div className="flex items-center gap-2">
-                <svg
-                  className="w-6 h-6 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <div>
-                  <p className="text-sm text-gray-500">Photographe</p>
-                  <p className="font-medium">
-                    {event.user.name || event.user.email}
-                  </p>
-                </div>
-              </div>
+      <footer className="border-t border-gray-100 py-8">
+        <div className="max-w-screen-2xl mx-auto px-6 flex items-center justify-between text-sm text-gray-500">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+              {new Date(event.date).toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
             </div>
+            {event.location && (
+              <div className="flex items-center gap-2">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                </svg>
+                {event.location}
+              </div>
+            )}
           </div>
 
-          <div className="border-t pt-6">
-            <p className="text-gray-600 text-sm">
-              Événement créé le{" "}
-              {new Date(event.createdAt).toLocaleDateString("fr-FR")}
-            </p>
-          </div>
-        </div>
-
-        {/* Photos Gallery */}
-        <div className="bg-white rounded-lg p-8 md:p-12">
-          <PublicPhotoGallery
-            photos={event.photos.map((photo) => ({
-              ...photo,
-              createdAt: photo.createdAt.toISOString(),
-            }))}
-            eventId={event.id}
-          />
-        </div>
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-white border-t mt-16">
-        <div className="max-w-6xl mx-auto px-4 py-8 text-center text-gray-600">
-          <p>
-            Propulsé par{" "}
-            <Link
-              href="/"
-              className="text-[#6366f1] hover:text-[#4f46e5] font-medium"
-            >
-              EventShot
-            </Link>
-          </p>
+          <Link
+            href="/"
+            className="text-gray-900 hover:text-gray-600 font-medium transition-colors"
+          >
+            EventShot
+          </Link>
         </div>
       </footer>
     </div>

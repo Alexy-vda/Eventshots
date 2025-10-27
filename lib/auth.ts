@@ -1,16 +1,12 @@
-// lib/auth.ts
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-// Vérifier que JWT_SECRET existe
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET) {
   throw new Error("JWT_SECRET must be defined in environment variables");
 }
 
-// Type assertion après vérification
 const secret: string = JWT_SECRET;
 
-// Types pour les payloads
 export interface AccessTokenPayload {
   sub: string;
   email: string;
@@ -32,7 +28,6 @@ export function signRefresh(payload: RefreshTokenPayload): string {
 export function verify(token: string): JwtPayload {
   const decoded = jwt.verify(token, secret);
 
-  // jwt.verify peut retourner string | JwtPayload
   if (typeof decoded === "string") {
     throw new Error("Invalid token format");
   }
@@ -66,7 +61,6 @@ export function verifyRefresh(token: string): RefreshTokenPayload {
   };
 }
 
-// Helper pour vérifier un token et retourner le userId
 export async function verifyToken(
   token: string
 ): Promise<{ userId: string; email: string } | null> {

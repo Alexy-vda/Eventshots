@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Hook pour renouveler automatiquement le token
+
   useAuth();
 
   return (

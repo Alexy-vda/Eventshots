@@ -5,33 +5,24 @@ export const revalidate = false;
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24">
-          {/* Floating avatars decoration */}
-          <div className="absolute top-20 left-10 hidden lg:block">
-            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#6366f1] to-[#8b5cf6] flex items-center justify-center text-white font-bold">
-              JD
-            </div>
-          </div>
-          <div className="absolute top-32 right-20 hidden lg:block">
-            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#ec4899] to-[#f43f5e] flex items-center justify-center text-white font-bold">
-              SM
-            </div>
-          </div>
-          <div className="absolute bottom-40 left-32 hidden lg:block">
-            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#f59e0b] to-[#eab308] flex items-center justify-center text-white font-bold">
-              AL
-            </div>
-          </div>
-          <div className="absolute bottom-32 right-40 hidden lg:block">
-            <div className="w-12 h-12 rounded-full bg-linear-to-br from-[#10b981] to-[#14b8a6] flex items-center justify-center text-white font-bold">
-              TC
-            </div>
-          </div>
+      <section className="relative bg-white overflow-hidden min-h-screen flex items-center">
+        <div className="absolute inset-0 z-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=2000')",
+            }}
+          />
 
-          <div className="text-center relative z-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#f5f5f5] rounded-full text-sm font-medium text-[#666] mb-6">
+          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/50 to-black/70" />
+
+          <div className="absolute inset-0 bg-white/5" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 md:py-24 relative z-10 w-full">
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-sm font-medium text-white mb-6">
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -48,13 +39,13 @@ export default function Home() {
               PHOTO EVENTS
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-[#1a1a1a] leading-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-white! leading-tight drop-shadow-2xl">
               La plateforme professionnelle
               <br />
               pour photographes indépendants
             </h1>
 
-            <p className="text-lg sm:text-xl mb-10 text-[#666] max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
               Gérez vos événements, partagez vos photos avec vos clients et
               développez votre activité de photographe professionnel en toute
               simplicité.
@@ -63,15 +54,20 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 mb-16">
               <Link
                 href="/register"
-                className="px-6 py-3 bg-[#1a1a1a] text-white rounded-lg font-medium text-base hover:bg-[#2d2d2d] transition-colors"
+                className="px-8 py-4 bg-white text-[#1a1a1a] rounded-lg font-medium text-base hover:bg-white/90 transition-all shadow-xl hover:shadow-2xl hover:scale-105"
               >
-                Démarrer
+                Démarrer gratuitement
+              </Link>
+              <Link
+                href="/login"
+                className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg font-medium text-base hover:bg-white/20 transition-all border border-white/30"
+              >
+                Se connecter
               </Link>
             </div>
 
-            {/* Trusted by section */}
             <div className="mt-16">
-              <p className="text-sm text-[#999] mb-6 font-medium">
+              <p className="text-sm text-white/70 mb-6 font-medium">
                 Utilisé par plus de 100 photographes indépendants en France
               </p>
             </div>
@@ -79,7 +75,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Intro */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium text-[#666] mb-6">
@@ -111,10 +106,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Grid */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
-          {/* Feature 1 - Gestion des événements */}
           <div className="bg-white rounded-2xl p-8 border border-gray-100">
             <div className="flex items-start justify-between mb-6">
               <div>
@@ -134,14 +127,12 @@ export default function Home() {
                 Accès libre →
               </Link>
             </div>
-            {/* Events Preview */}
+
             <div className="bg-[#fafafa] rounded-lg p-4 space-y-3">
-              {/* Event 1 - With cover image */}
               <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-32 bg-gradient-to-br from-[#6366f1] to-[#8b5cf6]">
-                  {/* Simulated photo cover - in real app would be actual photo */}
+                <div className="relative h-32 bg-linear-to-br from-[#6366f1] to-[#8b5cf6]">
                   <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519741497674-611481863552?w=400')] bg-cover bg-center" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3">
                     <p className="font-semibold text-white text-sm">
                       Mariage Sophie & Marc
@@ -153,10 +144,8 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Event 2 - Without cover (placeholder) */}
               <div className="bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-32 bg-gradient-to-br from-[#ec4899] to-[#f43f5e]">
-                  {/* Placeholder when no photos */}
+                <div className="relative h-32 bg-linear-to-br from-[#ec4899] to-[#f43f5e]">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <svg
                       className="w-12 h-12 text-white/40"
@@ -178,7 +167,7 @@ export default function Home() {
                       />
                     </svg>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-3 left-3 right-3">
                     <p className="font-semibold text-white text-sm">
                       Baptême Lucas
@@ -192,7 +181,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Feature 2 - Partage simple */}
           <div className="bg-white rounded-2xl p-8 border border-gray-100">
             <div className="mb-6">
               <h3 className="text-2xl font-bold mb-2 text-[#1a1a1a]">
@@ -204,7 +192,7 @@ export default function Home() {
                 Protection par code d&apos;accès disponible.
               </p>
             </div>
-            {/* Share Preview */}
+
             <div className="bg-[#fafafa] rounded-lg p-6 space-y-4">
               <div className="bg-white p-4 rounded-lg border-2 border-dashed border-gray-300">
                 <div className="flex items-center gap-3">
@@ -271,7 +259,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Coming Soon */}
           <div className="bg-linear-to-br from-[#6366f1] to-[#8b5cf6] rounded-2xl p-8 text-white md:col-span-2">
             <div className="text-center max-w-2xl mx-auto">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-full text-sm font-medium mb-6">
@@ -317,18 +304,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonial Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="relative bg-white overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 z-0">
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2000')",
+            }}
+          />
+
+          <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/60 to-black/70" />
+
+          <div className="absolute inset-0 bg-white/5" />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <svg
-            className="w-12 h-12 mx-auto mb-8 text-[#1a1a1a]"
+            className="w-12 h-12 mx-auto mb-8 text-white drop-shadow-lg"
             fill="currentColor"
             viewBox="0 0 24 24"
           >
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
           </svg>
 
-          <blockquote className="text-2xl md:text-3xl font-medium text-[#1a1a1a] mb-8 leading-relaxed">
+          <blockquote className="text-2xl md:text-3xl font-medium text-white mb-8 leading-relaxed drop-shadow-2xl">
             &quot;Depuis que j&apos;utilise EventShot, je gagne un temps fou
             dans la gestion de mes mariages. Mes clients adorent pouvoir accéder
             à leurs photos facilement. C&apos;est devenu un outil indispensable
@@ -337,12 +337,14 @@ export default function Home() {
 
           <div className="flex items-center justify-center gap-4">
             <div className="flex -space-x-2">
-              <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#6366f1] to-[#8b5cf6] border-2 border-white" />
-              <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#f59e0b] to-[#eab308] border-2 border-white" />
+              <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#6366f1] to-[#8b5cf6] border-2 border-white/50" />
+              <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#f59e0b] to-[#eab308] border-2 border-white/50" />
             </div>
             <div className="text-left">
-              <p className="font-semibold text-[#1a1a1a]">Sophie Martin</p>
-              <p className="text-sm text-[#666]">
+              <p className="font-semibold text-white drop-shadow-lg">
+                Sophie Martin
+              </p>
+              <p className="text-sm text-white/90 drop-shadow-lg">
                 Photographe mariage & événementiel
               </p>
             </div>
@@ -350,7 +352,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-12 text-center">
@@ -376,11 +377,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-[#1a1a1a] text-white/70 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
-            {/* Company Info */}
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-white text-lg font-bold">EventShot</span>

@@ -1,12 +1,10 @@
-// lib/authClient.ts
-// Utilities pour l'authentification côté client
-// Note: Ce fichier est utilisé uniquement côté client (pas de "use client" nécessaire dans un fichier lib)
+
 
 let isRefreshing = false;
 let refreshPromise: Promise<boolean> | null = null;
 
 export async function refreshAccessToken(): Promise<boolean> {
-  // Si un refresh est déjà en cours, attendre qu'il se termine
+
   if (isRefreshing && refreshPromise) {
     return refreshPromise;
   }
@@ -52,12 +50,11 @@ export async function fetchWithAuth(
 
   let response = await fetch(url, { ...options, headers });
 
-  // Si 401 (token expiré), essayer de refresh
   if (response.status === 401) {
     const refreshed = await refreshAccessToken();
 
     if (refreshed) {
-      // Réessayer la requête avec le nouveau token
+
       const newToken = localStorage.getItem("access_token");
       const newHeaders = {
         ...options.headers,
@@ -65,7 +62,7 @@ export async function fetchWithAuth(
       };
       response = await fetch(url, { ...options, headers: newHeaders });
     } else {
-      // Refresh échoué, rediriger vers login
+
       localStorage.removeItem("access_token");
       localStorage.removeItem("username");
       window.location.href = "/login";
