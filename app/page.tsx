@@ -107,14 +107,14 @@ export default function Home() {
       </section>
 
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
-          <div className="bg-white rounded-2xl p-8 border border-gray-100">
-            <div className="flex items-start justify-between mb-6">
-              <div>
-                <h3 className="text-2xl font-bold mb-2 text-[#1a1a1a]">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100">
+            <div className="flex flex-col sm:flex-row items-start justify-between mb-6 gap-4">
+              <div className="flex-1">
+                <h3 className="text-xl md:text-2xl font-bold mb-2 text-[#1a1a1a]">
                   Gestion des événements
                 </h3>
-                <p className="text-[#666]">
+                <p className="text-sm md:text-base text-[#666]">
                   Créez et organisez vos mariages, baptêmes, anniversaires et
                   shootings en quelques clics. Chaque événement dispose de sa
                   propre galerie privée.
@@ -122,7 +122,7 @@ export default function Home() {
               </div>
               <Link
                 href="/dashboard"
-                className="text-sm text-[#6366f1] font-medium whitespace-nowrap"
+                className="text-sm text-[#6366f1] font-medium whitespace-nowrap self-start sm:self-auto"
               >
                 Accès libre →
               </Link>
@@ -181,23 +181,23 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-8 border border-gray-100">
+          <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100">
             <div className="mb-6">
-              <h3 className="text-2xl font-bold mb-2 text-[#1a1a1a]">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 text-[#1a1a1a]">
                 Partage simple et sécurisé
               </h3>
-              <p className="text-[#666]">
+              <p className="text-sm md:text-base text-[#666]">
                 Un lien unique par événement pour permettre à vos clients
                 d&apos;accéder et télécharger leurs photos en haute qualité.
                 Protection par code d&apos;accès disponible.
               </p>
             </div>
 
-            <div className="bg-[#fafafa] rounded-lg p-6 space-y-4">
-              <div className="bg-white p-4 rounded-lg border-2 border-dashed border-gray-300">
-                <div className="flex items-center gap-3">
+            <div className="bg-[#fafafa] rounded-lg p-4 md:p-6 space-y-4">
+              <div className="bg-white p-3 md:p-4 rounded-lg border-2 border-dashed border-gray-300">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                   <svg
-                    className="w-5 h-5 text-[#6366f1]"
+                    className="w-5 h-5 text-[#6366f1] shrink-0"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -209,13 +209,13 @@ export default function Home() {
                       d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
                     />
                   </svg>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <p className="text-xs text-[#999] mb-1">Lien de partage</p>
-                    <p className="text-sm font-mono text-[#1a1a1a]">
+                    <p className="text-sm font-mono text-[#1a1a1a] truncate">
                       eventshot.com/e/mariage-s...
                     </p>
                   </div>
-                  <button className="px-3 py-1 bg-[#1a1a1a] text-white text-xs rounded-md hover:bg-[#2d2d2d] transition-colors">
+                  <button className="px-3 py-1 bg-[#1a1a1a] text-white text-xs rounded-md hover:bg-[#2d2d2d] transition-colors whitespace-nowrap self-start sm:self-auto">
                     Copier
                   </button>
                 </div>
